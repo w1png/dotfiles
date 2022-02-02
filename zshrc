@@ -8,8 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="gnzh-custom"
-#ZSH_THEME="pi"
+ZSH_THEME="nicoulaj"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -71,9 +70,7 @@ ZSH_THEME="gnzh-custom"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git archlinux rust python zsh-completions)
-
-autoload -U compinit && compinit
+plugins=(git python)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,10 +99,16 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vim="nvim"
-alias py='python3.10'
-alias python='py'
-alias neofetch="neofetch --ascii_distro arch_small"
-alias lofi="clear && mpv https://www.youtube.com/watch?v=7NOSDKb0HlU --no-video --no-resume-playback"
-alias git_undo="git reset --soft HEAD~1"
 
+# misc
+alias vim="nvim"
+alias py="python3.10"
+alias git_undo="git reset --soft HEAD~1"
+alias neofetch="neofetch --ascii_distro fedora_small"
+
+# dnf stuff
+alias dnfin="sudo dnf install"
+alias dnfs="dnf search"
+alias dnfup="sudo dnf update && sudo dnf upgrade"
+alias dnfrem="sudo dnf remove"
+alias code="flatpak run com.visualstudio.code"
