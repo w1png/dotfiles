@@ -70,7 +70,7 @@ ZSH_THEME="nicoulaj"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git python)
+plugins=(git python archlinux)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -111,4 +111,7 @@ alias dnfin="sudo dnf install"
 alias dnfs="dnf search"
 alias dnfup="sudo dnf update && sudo dnf upgrade"
 alias dnfrem="sudo dnf remove"
-alias code="flatpak run com.visualstudio.code"
+
+# Pacman
+alias pacup="sudo pacman -Syu"
+
