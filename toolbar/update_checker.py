@@ -4,8 +4,8 @@ import platform
 LINUX_DISTRO = platform.freedesktop_os_release()["ID"]
 
 if LINUX_DISTRO == "arch":
-    update_amount = popen("checkupdates | wc -l").read()
-    print("No new updates!" if update_amount == 0 else ("New updates: " + str(update_amount)))
+    update_amount = popen("checkupdates | wc -l").read().rstrip()
+    print("No new updates!" if update_amount == "0" else ("New updates: " + str(update_amount)))
 
 elif LINUX_DISTRO == "fedora":
     try:
