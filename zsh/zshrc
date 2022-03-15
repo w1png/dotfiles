@@ -1,0 +1,29 @@
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="nicoulaj-custom"
+
+plugins=(git python archlinux)
+
+source $ZSH/oh-my-zsh.sh
+
+/usr/bin/setxkbmap -option "caps:swapescape"
+
+# Aliases
+# misc
+alias vim="nvim"
+alias py="python3.10"
+alias git_undo="git reset --soft HEAD~1"
+alias neofetch="neofetch --ascii_distro arch_small"
+alias less="bat"
+alias cat="bat"
+alias tnode="node --loader ts-node/esm"
+
+# dnf stuff
+alias dnfin="sudo dnf install"
+alias dnfs="dnf search"
+alias dnfup="sudo dnf update && sudo dnf upgrade"
+alias dnfrem="sudo dnf remove"
+
+# Pacman
+alias pacup="sudo pacman -Syu"
+alias pacclean="sudo pacman -Sc && sudo pacman -Qtdq | sudo pacman -Rns -"

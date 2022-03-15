@@ -1,0 +1,104 @@
+set ma
+syntax on
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set number
+set nowrap
+set mouse=a
+set termguicolors
+set clipboard+=unnamedplus
+set encoding=UTF-8
+
+call plug#begin()
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
+Plug 'scrooloose/nerdcommenter'
+Plug 'morhetz/gruvbox'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'romgrk/barbar.nvim'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'kassio/neoterm'
+Plug 'sirver/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'ryanoasis/vim-devicons'
+
+call plug#end()
+
+" let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+let bufferline = get(g:, 'bufferline', {})
+let bufferline.icon_separator_active = '▎'
+let bufferline.icon_separator_inactive = '▎'
+let bufferline.icon_close_tab = 'X'
+let bufferline.icon_close_tab_modified = '●'
+let bufferline.icon_pinned = '📌'
+
+
+nmap <C-t> :NERDTreeTabsToggle<CR>
+nmap <C-s> :w <CR>
+nmap <C-z> :undo <CR>
+nmap <C-n> :tabnew<CR>
+nmap <C-z> :x<CR>
+
+nmap <C-_>   <Plug>NERDCommenterToggle
+vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
+
+
+let g:NERDTreeGitStatusWithFlags = 1
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+let g:NERDCreateDefaultMappings = 1
+let g:NERDSpaceDelims = 1
+let g:NERDCommentEmptyLines = 1
+
+
+colorscheme gruvbox
+
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-tsserver',
+  \ 'coc-eslint', 
+  \ 'coc-prettier', 
+  \ 'coc-json', 
+  \ ]
+
+set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+set signcolumn=yes
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nmap <F2> <Plug>(coc-rename)
+
+
+
