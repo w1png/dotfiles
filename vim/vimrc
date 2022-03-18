@@ -1,8 +1,8 @@
 set ma
 syntax on
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 set number
 set nowrap
@@ -31,8 +31,19 @@ Plug 'kassio/neoterm'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'ryanoasis/vim-devicons'
+Plug 'vimsence/vimsence'
+Plug 'zivyangll/git-blame.vim'
 
 call plug#end()
+
+" Discord settings
+let g:vimsence_client_id = '439476230543245312'
+let g:vimsence_small_text = 'NeoVim'
+let g:vimsence_small_image = 'neovim'
+let g:vimsence_editing_details = 'Editing: {}'
+let g:vimsence_editing_state = 'Working on: {}'
+let g:vimsence_file_explorer_text = 'In NERDTree'
+let g:vimsence_file_explorer_details = 'Looking for files'
 
 " let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -51,8 +62,9 @@ nmap <C-t> :NERDTreeTabsToggle<CR>
 nmap <C-s> :w <CR>
 nmap <C-z> :undo <CR>
 nmap <C-n> :tabnew<CR>
-nmap <C-z> :x<CR>
+nmap <C-x> :x<CR>
 
+nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
 nmap <C-_>   <Plug>NERDCommenterToggle
 vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
 
