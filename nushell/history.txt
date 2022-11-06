@@ -1,0 +1,145 @@
+mkdir ~/.cache/starship
+starship init nu | save ~/.cache/starship/init.nu
+nvim $nu.config-path
+nvim $nu.env-path
+source ~/.cache/starship/init.nu
+term size
+term size -c
+nvim ~/.cache/starship/init.nu
+nvim $nu.config-path
+nvim $nu.env-path
+nvim ~/.cache/starship/init.nu
+cat dev/web/poker-shop-website/frontend/README.md
+ls
+l
+ll
+l
+all
+l
+ls
+nvim .zshrc
+spicetify 
+spicetify -h
+date list-timezone
+nvim .config/nushell/config.nu
+alias ll = ls -l
+ll
+nvim $nu.env-path
+nvim $nu.config-path
+export alias ll = ls -l
+ll
+ll
+py
+ll
+nvim .config/nushell/config.nu
+ll
+25*2
+math 25*2
+math 14+2
+math -h
+math sum 2 3
+math sum(2, 3)
+vim
+nvim .config/nushell/config.nu
+vim
+ll
+cat
+nvim .config/nushell/config.nu
+cd dotfiles/
+nvim .zshrc
+ls\
+ls
+l
+ll
+ln -nfs .config/
+ln -nfs .config/bspwm/ .
+ls
+cd bspwm/
+ls
+cat bspwmrc
+cd ..
+ln -nfs ~/.config/kitty .
+ls
+cd ..
+ls]
+ls
+ll
+cd ..
+rm -rf dotfiles/
+git clone github.com/w1png/dotfiles
+git clone https://github.com/w1png/dotfiles
+cd dotfiles/
+rm -rf ./*
+ll
+ls
+mkdir .config/
+ln -nfs ~/.config/kitty .config/kitty/
+cd .config/
+ls
+rm -rf ./*
+ls
+ln -nfs ~/.config/kitty .
+ls
+ln -nfs ~/.config/bspwm/ .
+ln -nfs ~/.config/cava/ .
+ln -nfs ~/.config/dunst/ .
+ln -nfs ~/.config/neofetch .
+ln -nfs ~/.config/nushell/ .
+ln -nfs ~/.config/nvim .
+ln -nfs ~/.config/picom/ .
+ln -nfs ~/.config/polybar/ .
+ln -nfs ~/.config/ranger/ .
+ln -nfs ~/.config/rofi/ .
+ln -nfs ~/.config/sxhkd/ .
+ln -nfs ~/.config/starship.toml .
+ls .
+ls bspwm/
+ls **/**
+git status
+gaa
+nvim .config/nushell/config.nu
+ranger
+cd dotfiles/
+ls
+git status
+ll
+ls -a
+ls -al
+nvim .config/nushell/config.nu
+cd dotfiles/
+ll
+rm .zshrc
+ls
+ll
+git status
+gaa
+git status
+code .
+nvim .config/nushell/env.nu
+ls
+ll
+rm -rf .config/
+ls
+mkdir .config/
+cd .config/
+cp ~/.config/cava/ .
+cp -r ~/.config/cava/ .
+cp -r ~/.config/bspwm/ .
+cp -r ~/.config/kitty/ .
+cp -r ~/.config/sxhkd/ .
+cp -r ~/.config/polybar/ .
+cp -r ~/.config/nvim/ .
+cp -r ~/.config/picom/ .
+cp -r ~/.config/ranger/ .
+cp -r ~/.config/neofetch/ .
+cp -r ~/.config/rofi/ .
+cp -r ~/.config/rofi/**/** .
+ls
+rm type-*
+rm -rf type-*
+ll
+cp -r ~/.config/nvim/ .
+cp -r ~/.config/starship.toml .
+cp -r ~/.config/rofi/ .
+cp -r ~/.config/dunst/ .
+cp -r ~/.config/nushell/ .

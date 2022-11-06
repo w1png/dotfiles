@@ -1,0 +1,65 @@
+# Bspwm
+# =========
+
+# make sxhkd reload its configuration files
+super + alt + r
+	pkill -USR1 -x sxhkd
+ 
+# restart bspwm
+super + shift + r
+	bspc wm -r
+
+# close a window 
+super + q
+	bspc node -c
+
+# change the window state
+super + shift + {t,l,f}
+	bspc node -t {tiled,floating,fullscreen}
+
+# move window to workspace and focus it
+super + shift +{0,1-9}
+	bspc node -d '^{1,2-9}' -f
+
+# switch to workspace
+super + {0,1-9}
+	bspc desktop -f '^{1,2-9}'
+
+# move window to next monitor and focus it
+ctrl + alt + {Left,Right}
+	bspc node -m {west,east} -f
+
+# focus node on the given direction
+super + shift + {Left,Right}
+	bspc node -f {west,east}
+
+# make focused node the main node
+super + shift + m
+	bspc node -o 0.5 -f
+
+# screenshot
+Print
+	$HOME/.config/rofi/applets/bin/screenshot.sh
+
+# Apps
+# =========
+
+# terminal
+ctrl + alt + t
+	kitty
+ 
+# browser
+super + f
+	firefox
+
+# file manager
+super + e
+	thunar
+
+# launcher
+super + d
+	~/.config/rofi/launchers/type-6/launcher.sh 
+
+# toggle keyboard layout (us,ru)
+super + space
+	setxkbmap -layout us,ru -option grp:super_space_toggle
