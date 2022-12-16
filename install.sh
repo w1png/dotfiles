@@ -8,5 +8,5 @@ cp -r config/* ~/.config
 
 cp .zhsrc ~/.zhsrc
 cp .gitconfig ~/.gitconfig
-cp .spicetify ~/.spicetify
+# cp .spicetify ~/.spicetify
 

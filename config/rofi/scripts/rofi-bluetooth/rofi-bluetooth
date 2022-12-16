@@ -200,7 +200,8 @@ print_status() {
             fi
 
             if ((counter > 0)); then
-                printf ' '
+                # print the name of the first connected device
+                printf ' %s' "$(bluetoothctl info $device | grep Name | cut -d ' ' -f 2-)"
             fi
 
         done

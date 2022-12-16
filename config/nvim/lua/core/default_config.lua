@@ -11,14 +11,17 @@ M.options = {
 
 M.ui = {
   -- hl = highlights
-  -- highlight current line
 
-  hl_add = {},
-  hl_override = {},
+  hl_add = {
+  },
+  hl_override = {
+    CursorLine = { bg = "#1e222a" },
+
+  },
   changed_themes = {},
   theme_toggle = { "onedark", "one_light" },
   theme = "onedark", -- default theme
-  transparency = false,
+  transparency = true,
 }
 
 M.plugins = {}

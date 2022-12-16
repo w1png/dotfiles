@@ -33,6 +33,13 @@ ctrl + alt + {Left,Right}
 super + shift + {Left,Right,Up,Down}
 	bspc node -f {west,east,north,south}
 
+# switch current node and the biggest node
+ctrl + shift + s
+  bspc node -s biggest.local
+# undo the last swap
+ctrl + shift + u
+  bspc node -s last.local
+
 # screenshot
 Print
 	$HOME/.config/rofi/applets/bin/screenshot.sh
@@ -54,7 +61,8 @@ super + e
 
 # launcher
 super + d
-	rofi -show drun
+  $HOME/.config/rofi/launchers/type-7/launcher.sh
+	# rofi -show drun
 
 # toggle keyboard layout (us,ru)
 super + space

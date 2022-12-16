@@ -16,5 +16,5 @@ cp -r ~/.config/ranger/ config/
 cp -r ~/.config/rofi/ config/
 cp -r ~/.config/sxhkd/ config/
 
-cp -r ~/.spicetify/ .
+# cp -r ~/.spicetify/ .
 

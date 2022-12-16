@@ -1,16 +1,25 @@
 [global]
-frame_color = "#8AADF4"
+frame_color = "#ffffff"
 separator_color= frame
+monitor = 2
+/* fira code nerd font mono */
+font = FiraCode Nerd Font Mono 16
+max_icon_size = 80
+
 
 [urgency_low]
-background = "#24273A"
-foreground = "#CAD3F5"
+background = "#000000"
+foreground = "#ffffff"
+timeout = 4
 
 [urgency_normal]
-background = "#24273A"
-foreground = "#CAD3F5"
+background = "#000000"
+foreground = "#ffffff"
+timeout = 4
 
 [urgency_critical]
-background = "#24273A"
-foreground = "#CAD3F5"
+background = "#000000"
+foreground = "#ffffff"
 frame_color = "#F5A97F"
+timeout = 4
+
