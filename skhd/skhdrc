@@ -1,0 +1,6 @@
+# apps
+ctrl + cmd - t : open -na iTerm.app
+alt - f : open -na Google\ Chrome.app
+
+# yabai
+shift + cmd - r : yabai --restart-service
