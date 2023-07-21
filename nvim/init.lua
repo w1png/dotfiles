@@ -14,9 +14,11 @@ require('packer').startup(function(use)
     tag = "legacy",
   }
 
+  use {'onsails/lspkind-nvim'}
+
   use {
     'neovim/nvim-lspconfig',
-     requires = {
+    requires = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
 
@@ -30,6 +32,9 @@ require('packer').startup(function(use)
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
+
+  -- jose-elias-alvarez/null-ls.nvim_
+  use 'jose-elias-alvarez/null-ls.nvim'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -297,12 +302,12 @@ require('gitsigns').setup {
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
-    pickers = {
-      colorscheme = {
-        enable_preview = true,
-        theme = "dropdown",
-      },
+  pickers = {
+    colorscheme = {
+      enable_preview = true,
+      theme = "dropdown",
     },
+  },
 
   defaults = {
     mappings = {
@@ -321,8 +326,10 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 
 vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>g', ':lua require("telescope.builtin").live_grep()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>fb', ':lua require("telescope.builtin").file_browser()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>gg', ':lua require("telescope.builtin").live_grep()<CR>',
+  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fb', ':lua require("telescope.builtin").file_browser()<CR>',
+  { noremap = true, silent = true })
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').find_files, { desc = 'Search Files' })
@@ -370,7 +377,20 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.format()
   end, '[C]ode [F]ormat')
 
+  -- Autoformat on save
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+  local null_ls = require("null-ls")
+  null_ls.setup({
+    on_attach = function(client, bufnr)
+      if client.supports_method("textDocument/formatting") then
+        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.format()")
+      end
+    end,
+    sources = { null_ls.builtins.formatting.gofmt }
+  })
   -- autoimport on <leader>ci
+  --
   nmap('<leader>ci', function()
     vim.lsp.buf.code_action()
   end, '[C]ode [I]mport')
@@ -403,6 +423,7 @@ local servers = {
   pyright = {},
   rust_analyzer = {},
   tsserver = {},
+  tailwindcss = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -441,6 +462,38 @@ mason_lspconfig.setup_handlers {
 -- Turn on lsp status information
 require('fidget').setup()
 
+local lspkind = require('lspkind')
+lspkind.init({
+  preset = 'codicons',
+  symbol_map = {
+    Text = "󰉿",
+    Method = "󰆧",
+    Function = "󰊕",
+    Constructor = "",
+    Field = "󰜢",
+    Variable = "󰀫",
+    Class = "󰠱",
+    Interface = "",
+    Module = "",
+    Property = "󰜢",
+    Unit = "󰑭",
+    Value = "󰎠",
+    Enum = "",
+    Keyword = "󰌋",
+    Snippet = "",
+    Color = "󰏘",
+    File = "󰈙",
+    Reference = "󰈇",
+    Folder = "󰉋",
+    EnumMember = "",
+    Constant = "󰏿",
+    Struct = "󰙅",
+    Event = "",
+    Operator = "󰆕",
+    TypeParameter = "",
+  },
+})
+
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -453,16 +506,18 @@ cmp.setup {
   },
 
   window = {
-    completion = cmp.config.window.bordered({border = {
-       "╭", 
-       "─",
-       "╮",
-       "│",
-       "╯",
-       "─",
-       "╰",
-       "│",
-    }})
+    completion = cmp.config.window.bordered({
+      border = {
+        "╭",
+        "─",
+        "╮",
+        "│",
+        "╯",
+        "─",
+        "╰",
+        "│",
+      }
+    })
   },
 
   mapping = cmp.mapping.preset.insert {
@@ -496,6 +551,17 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol',
+      maxwidth = 50,
+      ellipsis_char = '...',
+      before = function (entry, vim_item)
+        return vim_item
+      end
+    })
+  }
 }
 
 require("presence").setup()
