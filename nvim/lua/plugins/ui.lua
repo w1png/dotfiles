@@ -1,11 +1,56 @@
 return {
   {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        transparent_background = true,
+      })
+      vim.cmd([[colorscheme catppuccin-mocha]])
+    end
+  },
+  {
     "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
     config = function()
       vim.o.background = "dark"
-      vim.cmd([[colorscheme gruvbox]])
+      -- vim.cmd([[colorscheme gruvbox]])
+      -- vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
+    end,
+  },
+  {
+    'Mofiqul/vscode.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd [[colorscheme vscode]]
+      -- vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
+    end
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('kanagawa').setup({
+        compile = false,
+        undercurl = true,
+        transparent = false,
+        dimInactive = false,
+      })
+
+      -- vim.cmd([[colorscheme kanagawa-dragon]])
+    end
+  },
+  {
+    'shaunsingh/nord.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.o.background = "dark"
+      -- vim.cmd([[colorscheme nord]])
     end,
   },
   {
@@ -17,110 +62,17 @@ return {
     opts = {},
   },
   {
-    "nvim-tree/nvim-tree.lua",
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.4',
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      'nvim-lua/plenary.nvim',
     },
-    config = function()
-      require('nvim-tree').setup({
-        disable_netrw = true,
-        hijack_netrw = true,
-        hijack_cursor = true,
-        hijack_unnamed_buffer_when_opening = true,
-        sync_root_with_cwd = true,
-
-        actions = {
-          open_file = {
-            resize_window = true,
-          },
-        },
-
-        update_focused_file = {
-          enable = true,
-          update_root = false,
-        },
-
-        filesystem_watchers = {
-          enable = true,
-        },
-        view = {
-          adaptive_size = false,
-          side = "left",
-          width = 30,
-          preserve_window_proportions = true,
-        },
-        git = {
-          enable = true,
-          ignore = false,
-        },
-
-        renderer = {
-          root_folder_label = false,
-          highlight_git = false,
-          highlight_opened_files = "none",
-
-          indent_markers = {
-            enable = false,
-          },
-
-          icons = {
-            show = {
-              file = true,
-              folder = true,
-              folder_arrow = true,
-              git = true,
-            },
-
-            glyphs = {
-              default = "󰈚",
-              symlink = "",
-              folder = {
-                empty = "",
-                empty_open = "",
-                open = "",
-                symlink = "",
-                symlink_open = "",
-                arrow_open = "",
-                arrow_closed = "",
-              },
-              git = {
-                unstaged = "✗",
-                staged = "✓",
-                unmerged = "",
-                renamed = "➜",
-                untracked = "★",
-                deleted = "",
-                ignored = "◌",
-              },
-            },
-          },
-        },
-
-        filters = {
-          dotfiles = false,
-        },
-      })
-
-      vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeFocus<CR>', { noremap = true, silent = true })
-      vim.api.nvim_create_autocmd('VimEnter', {
-        command = 'if empty(expand("%")) || expand("%") == "startify" || expand("%") == "" | NvimTreeToggle | endif',
-        group = 'NvimTree',
-        pattern = '*',
-      })
-    end
-  },
-
-  {
-    'nvim-telescope/telescope.nvim', tag = '0.1.4',
-    dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('telescope').setup {
         pickers = {
-          colorscheme = {
-            enable_preview = true,
-            theme = "dropdown",
-          },
+          find_files = {
+            hidden = true,
+          }
         },
 
         defaults = {
@@ -137,29 +89,57 @@ return {
       }
 
       pcall(require('telescope').load_extension, 'fzf')
+      pcall(require('telescope').load_extension, 'noice')
+      pcall(require('telescope').load_extension, 'colors')
 
-      vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>gg', ':lua require("telescope.builtin").live_grep()<CR>',
-        { noremap = true, silent = true })
-      vim.keymap.set('n', '<leader><space>', require('telescope.builtin').find_files, { desc = 'Search Files' })
-      vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+      local builtin = require('telescope.builtin')
+
+      vim.keymap.set('n', '<leader>gg', builtin.live_grep, { desc = '[G]rep [G]rep' })
+      vim.keymap.set('n', '<leader><space>', builtin.find_files, { desc = 'Search Files' })
+      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+      vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "[G]it [S]tatus" })
     end
   },
-  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', },
   {
-      'lewis6991/gitsigns.nvim',
-      config = function()
-        require('gitsigns').setup {
-          signs = {
-            add = { text = '+' },
-            change = { text = '~' },
-            delete = { text = '_' },
-            topdelete = { text = '‾' },
-            changedelete = { text = '~' },
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup()
+    end
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    config = function()
+      require("notify").setup({
+        background_colour = "#000000",
+      })
+      require("noice").setup({
+        lsp = {
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
           },
-        }
-      end
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = true,
+          long_message_to_split = true,
+          inc_rename = false,
+          lsp_doc_border = false,
+        },
+
+        vim.keymap.set("n", "<leader>nd", "<cmd>Noice dismiss<cr>", { desc = "Dismiss all messages" }),
+      })
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    }
   },
 }
-

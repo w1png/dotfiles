@@ -27,3 +27,12 @@ vim.o.ruler = false
 vim.o.showcmd = false
 
 
+vim.keymap.set('n', '<leader>b<Right>', '<cmd>:wincmd l<CR>', { silent = true })
+vim.keymap.set('n', '<leader>b<Left>', '<cmd>:wincmd h<CR>', { silent = true })
+vim.keymap.set('n', '<leader>b<Up>', '<cmd>:wincmd k<CR>', { silent = true })
+vim.keymap.set('n', '<leader>b<Down>', '<cmd>:wincmd j<CR>', { silent = true })
+vim.keymap.set('n', '<leader>bs', '<cmd>:split<CR>', { silent = true })
+vim.keymap.set('n', '<leader>bv', '<cmd>:vsplit<CR>', { silent = true })
+
+
+vim.o.scrolloff = 1

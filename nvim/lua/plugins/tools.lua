@@ -9,58 +9,44 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 return {
   {
-		"ThePrimeagen/refactoring.nvim",
-		keys = {
-			{
-				"<leader>r",
-				function()
-					require("refactoring").select_refactor()
-				end,
-				mode = "v",
-				noremap = true,
-				silent = true,
-				expr = false,
-			},
-		},
-		opts = {},
-	},
+    "ThePrimeagen/refactoring.nvim",
+    lazy = true,
+    keys = {
+      {
+        "<leader>r",
+        function()
+          require("refactoring").select_refactor()
+        end,
+        mode = "v",
+        noremap = true,
+        silent = true,
+        expr = false,
+      },
+    },
+    opts = {},
+  },
   {
-  "karb94/neoscroll.nvim",
-  config = function ()
-    vim.keymap.set('n', '<ScrollWheelUp>', '<C-y>')
-    vim.keymap.set('n', '<ScrollWheelDown>', '<C-e>')
-    vim.keymap.set('i', '<ScrollWheelUp>', '<C-y>')
-    vim.keymap.set('i', '<ScrollWheelDown>', '<C-e>')
-    vim.keymap.set('v', '<ScrollWheelUp>', '<C-y>')
-    vim.keymap.set('v', '<ScrollWheelDown>', '<C-e>')
-
-    require('neoscroll').setup {
-      mappings = { '<C-y>', '<C-e>' },
-    }
-  end
-},
-  {
-		"b0o/incline.nvim",
-		dependencies = { "craftzdog/solarized-osaka.nvim" },
-		event = "BufReadPre",
-		priority = 1200,
-		config = function()
-			require("incline").setup({})
+    "b0o/incline.nvim",
+    dependencies = { "craftzdog/solarized-osaka.nvim" },
+    event = "BufReadPre",
+    priority = 1200,
+    config = function()
+      require("incline").setup({})
     end
   },
   {
-      'numToStr/Comment.nvim',
-      opts = {},
-      lazy = false,
-      config = function()
-
+    'numToStr/Comment.nvim',
+    opts = {},
+    lazy = false,
+    config = function()
       vim.keymap.set('n', '<leader>/', ':lua require("Comment.api").toggle.linewise.current()<CR>', { silent = true })
-      vim.keymap.set('v', '<leader>/', ':lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>', { silent = true })
-      end
+      vim.keymap.set('v', '<leader>/', ':lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
+        { silent = true })
+    end
   },
   {
     'ggandor/leap.nvim',
-    config = function ()
+    config = function()
       require("leap").add_default_mappings()
     end
   },
@@ -68,5 +54,11 @@ return {
     'windwp/nvim-autopairs',
     event = "InsertEnter",
     opts = {}
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
   },
 }
