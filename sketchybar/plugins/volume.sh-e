@@ -1,0 +1,43 @@
+#!/bin/sh
+
+function onclick() {
+  IS_MUTED=$(osascript -e "output muted of (get volume settings)")
+
+  if [[ $IS_MUTED == "true" ]]; then
+    osascript -e "set volume without output muted"
+  else
+    osascript -e "set volume with output muted"
+  fi
+}
+
+function getvolume() {
+  VOLUME=$INFO
+
+  case $VOLUME in
+    [6-9][0-9]|100) ICON="󰕾"
+    ;;
+    [3-5][0-9]) ICON="󰖀"
+    ;;
+    [1-9]|[1-2][0-9]) ICON="󰕿"
+    ;;
+    *) ICON="󰖁"
+  esac
+
+  sketchybar --set $NAME icon="$ICON" label="$VOLUME%"
+}
+
+case $SENDER in
+  "volume_change")
+    getvolume
+    ;;
+  "mouse.entered")
+    sketchybar -m --set $NAME background.color=0x33ffffff
+    ;;
+  "mouse.exited")
+    sketchybar -m --set $NAME background.color=0x15ffffff
+    ;;
+  "mouse.clicked")
+    onclick
+    ;;
+esac
+

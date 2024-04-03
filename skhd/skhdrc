@@ -1,18 +1,19 @@
-# apps
-ctrl + cmd - t : open -na iTerm.app
-
 # yabai
-shift + cmd - r : yabai --restart-service
+alt + cmd - r : yabai --restart-service
+# skhd
+ctrl + cmd - r : skhd --restart
 
-alt - left : yabai -m window --focus west
-alt - right : yabai -m window --focus east
-alt - up : yabai -m window --focus north
-alt - down : yabai -m window --focus south
+ctrl + shift - left : yabai -m window --focus west || yabai -m display --focus west
+ctrl + shift - right : yabai -m window --focus east || yabai -m display --focus east
+ctrl + shift - up : yabai -m window --focus north || yabai -m display --focus north
+ctrl + shift - down : yabai -m window --focus south || yabai -m display --focus south
+
+alt - h : osascript -e 'tell app "Finder" to display dialog "Hello World"'
+alt - t : yabai -m window --toggle zoom-fullscreen
+alt - r : yabai -m space --rotate 90
 
 # float window
 alt - f : yabai -m window --toggle float
 
-# window rules
-yabai -m rule --add app="^System Preferences$" manage=off
-yabai -m rule --add app="^System Settings$" manage=off
-yabai -m rule --add title='OpenVPN Connect' manage=off
+cmd - left : yabai -m window --swap west || $(yabai -m window --display west; yabai -m display --focus west)
+cmd - right : yabai -m window --swap east || $(yabai -m window --display east; yabai -m display --focus east)
