@@ -9,23 +9,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 return {
   {
-    "ThePrimeagen/refactoring.nvim",
-    lazy = true,
-    keys = {
-      {
-        "<leader>r",
-        function()
-          require("refactoring").select_refactor()
-        end,
-        mode = "v",
-        noremap = true,
-        silent = true,
-        expr = false,
-      },
-    },
-    opts = {},
-  },
-  {
     "b0o/incline.nvim",
     dependencies = { "craftzdog/solarized-osaka.nvim" },
     event = "BufReadPre",
@@ -42,12 +25,6 @@ return {
       vim.keymap.set('n', '<leader>/', ':lua require("Comment.api").toggle.linewise.current()<CR>', { silent = true })
       vim.keymap.set('v', '<leader>/', ':lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
         { silent = true })
-    end
-  },
-  {
-    'ggandor/leap.nvim',
-    config = function()
-      require("leap").add_default_mappings()
     end
   },
   {

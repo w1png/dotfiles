@@ -1,13 +1,115 @@
 return {
   {
+    'NvChad/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
+    end
+  },
+  {
+    "kyazdani42/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require('nvim-tree').setup({
+        disable_netrw = true,
+        hijack_netrw = true,
+        hijack_cursor = true,
+        hijack_unnamed_buffer_when_opening = true,
+        sync_root_with_cwd = true,
+
+        actions = {
+          open_file = {
+            resize_window = true,
+          },
+        },
+
+        update_focused_file = {
+          enable = true,
+          update_root = false,
+        },
+
+        filesystem_watchers = {
+          enable = true,
+        },
+        view = {
+          adaptive_size = false,
+          side = "left",
+          width = 30,
+          preserve_window_proportions = true,
+        },
+        git = {
+          enable = true,
+          ignore = false,
+        },
+        renderer = {
+          root_folder_label = false,
+          highlight_git = false,
+          highlight_opened_files = "none",
+
+          indent_markers = {
+            enable = false,
+          },
+          icons = {
+            show = {
+              file = true,
+              folder = true,
+              folder_arrow = true,
+              git = false,
+            },
+            glyphs = {
+              default = "󰈚",
+              symlink = "",
+              folder = {
+                default = "",
+                empty = "",
+                empty_open = "",
+                open = "",
+                symlink = "",
+                symlink_open = "",
+                arrow_open = "",
+                arrow_closed = "",
+              },
+              git = {
+                unstaged = "✗",
+                staged = "✓",
+                unmerged = "",
+                renamed = "➜",
+                untracked = "★",
+                deleted = "",
+                ignored = "◌",
+              },
+            },
+          },
+        },
+
+        filters = {
+          dotfiles = false,
+        },
+      })
+
+      require('nvim-web-devicons').setup({})
+
+      vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+    end
+  },
+  {
+    "blazkowolf/gruber-darker.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd([[colorscheme gruber-darker]])
+      -- vim.o.background = "dark"
+      -- vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
+    end
+  },
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
     config = function()
-      require("catppuccin").setup({
-        transparent_background = true,
-      })
-      vim.cmd([[colorscheme catppuccin-mocha]])
+      -- require("catppuccin").setup({
+      --   transparent_background = true,
+      -- })
+      -- vim.cmd([[colorscheme catppuccin-mocha]])
     end
   },
   {
@@ -15,7 +117,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.o.background = "dark"
+      -- vim.o.background = "dark"
       -- vim.cmd([[colorscheme gruvbox]])
       -- vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
     end,
@@ -51,6 +153,25 @@ return {
     config = function()
       -- vim.o.background = "dark"
       -- vim.cmd([[colorscheme nord]])
+    end,
+  },
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("tokyonight").setup({
+        style = "night",
+        transparent = true,
+        styles = {
+          comments = { italic = true },
+          sidebars = "dark",
+          floats = "dark",
+        },
+        sidebars = { "qf", "help" },
+        dim_inactive = false, -- dims inactive windows
+      })
+      vim.cmd([[colorscheme tokyonight]])
     end,
   },
   {

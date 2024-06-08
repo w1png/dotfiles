@@ -36,3 +36,27 @@ vim.keymap.set('n', '<leader>bv', '<cmd>:vsplit<CR>', { silent = true })
 
 
 vim.o.scrolloff = 1
+
+
+vim.keymap.set('n', '<C-j>', '<cmd>lua vim.diagnostic.open_float()<CR>', { silent = true })
+
+
+
+-- nnoremap <Left>  :echoe "Use h"<CR>
+-- nnoremap <Right> :echoe "Use l"<CR>
+-- nnoremap <Up>    :echoe "Use k"<CR>
+-- nnoremap <Down>  :echoe "Use j"<CR>
+
+-- local msg = [[<cmd>echohl Error | echo "KEY DISABLED" | echohl None<CR>]]
+--
+--
+-- vim.api.nvim_set_keymap('i', '<Up>', '<C-o>' .. msg, { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('i', '<Down>', '<C-o>' .. msg, { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('i', '<Left>', '<C-o>' .. msg, { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('i', '<Right>', '<C-o>' .. msg, { noremap = true, silent = false })
+--
+--
+-- vim.api.nvim_set_keymap('n', '<Up>', msg, { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('n', '<Down>', msg, { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('n', '<Left>', msg, { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('n', '<Right>', msg, { noremap = true, silent = false })

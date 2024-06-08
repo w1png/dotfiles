@@ -1,5 +1,19 @@
 return {
   {
+    'stevearc/conform.nvim',
+    opts = {},
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          lua = { "stylua" },
+          python = { "isort", "black" },
+          javascript = { { "prettierd", "prettier" } },
+          css = { "prettier" },
+        },
+      })
+    end
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
@@ -24,6 +38,7 @@ return {
       lspkind.init({
         preset = 'codicons',
         symbol_map = {
+          Supermaven = "",
           Text = "󰉿",
           Method = "󰆧",
           Function = "󰊕",
@@ -78,7 +93,7 @@ return {
       cmp.setup.cmdline('/', {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-          { name = 'buffer' }
+          { name = 'buffer' },
         }
       })
 
@@ -135,11 +150,11 @@ return {
           end, { 'i', 's' }),
         },
         sources = {
+          -- { name = "supermaven", priority = 100 },
           { name = 'nvim_lsp' },
           { name = 'path' },
           { name = 'luasnip' },
           { name = "emoji" },
-          { name = "codeium" },
           { name = 'nerdfont' },
         },
 
@@ -158,33 +173,82 @@ return {
   },
 
   {
-    'Exafunction/codeium.vim',
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
+    "supermaven-inc/supermaven-nvim",
     config = function()
-      vim.g.codeium_disable_bindings = 1
-      vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-    end
+      require("supermaven-nvim").setup({
+        keymaps = {
+          accept_suggestion = "<C-g>",
+        }
+      })
+    end,
+  },
+  -- {
+  --   'Exafunction/codeium.vim',
+  --   config = function()
+  --     vim.g.codeium_no_map_tab = 1
+  --     vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+  --   end
+  -- },
+  -- {
+  --   "Exafunction/codeium.nvim",
+  --   config = function()
+  --     require("codeium").setup({
+  --     })
+  --   end
+  -- },
+  {
+    "mfussenegger/nvim-lint",
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        javascript = { "eslint" },
+        typescript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescriptreact = { "eslint" },
+        python = { "pylint" },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      vim.keymap.set("n", "<leader>l", function()
+        lint.try_lint()
+      end, { desc = "Trigger linting for current file" })
+    end,
   },
   {
     "williamboman/mason.nvim",
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
       "neovim/nvim-lspconfig",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
       require('mason').setup()
       local mason_lspconfig = require 'mason-lspconfig'
 
-      local servers = {}
+      local mason_tool_installer = require("mason-tool-installer")
 
       mason_lspconfig.setup {
-        ensure_installed = vim.tbl_keys(servers),
         automatic_installation = true,
       }
       local lspconfig = require("lspconfig")
+
+      mason_lspconfig.setup_handlers({
+        -- default handler for installed servers
+        function(server_name)
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+          })
+        end,
+      })
 
       local on_attach = function(_, bufnr)
         local nmap = function(keys, func, desc)
@@ -270,17 +334,6 @@ return {
         capabilities = capabilities,
         filetypes = { "html", "templ" },
       })
-
-
-      mason_lspconfig.setup_handlers {
-        function(server_name)
-          require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-          }
-        end,
-      }
     end
   },
 }
