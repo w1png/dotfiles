@@ -11,25 +11,15 @@ return {
 		local mason_lspconfig = require("mason-lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-			callback = function(ev)
-				local opts = {
-					buffer = ev.buf,
-					silent = true,
-				}
+		local keymap = vim.keymap
 
-				local keymap = vim.keymap
-
-				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-				keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-				keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
-				keymap.set("n", "<leader>ci", function()
-					vim.lsp.buf.code_action()
-				end, opts)
-				keymap.set("n", "K", vim.lsp.buf.hover, opts)
-			end,
-		})
+		keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
+		keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
+		keymap.set("n", "<leader>gd", "<cmd>Telescope lsp_definitions<CR>")
+		keymap.set("n", "<leader>ci", function()
+			vim.lsp.buf.code_action()
+		end)
+		keymap.set("n", "K", vim.lsp.buf.hover)
 
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -43,22 +33,6 @@ return {
 			function(server_name)
 				lspconfig[server_name].setup({
 					capabilities = capabilities,
-				})
-			end,
-			["emmet_ls"] = function()
-				-- configure emmet language server
-				lspconfig["emmet_ls"].setup({
-					capabilities = capabilities,
-					filetypes = {
-						"html",
-						"typescriptreact",
-						"javascriptreact",
-						"css",
-						"sass",
-						"scss",
-						"less",
-						"svelte",
-					},
 				})
 			end,
 			["lua_ls"] = function()
@@ -108,6 +82,7 @@ return {
 					title = "",
 				}
 				vim.lsp.buf.execute_command(params)
+				vim.lsp.buf.format({ async = false })
 			end,
 		})
 	end,

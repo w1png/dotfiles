@@ -1,57 +1,51 @@
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "windwp/nvim-ts-autotag",
-    },
-    build = ":TSUpdate",
-    config = function()
-      local configs = require("nvim-treesitter.configs")
+	{
+		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"windwp/nvim-ts-autotag",
+		},
+		build = ":TSUpdate",
+		config = function()
+			local configs = require("nvim-treesitter.configs")
 
-      configs.setup {
-        ensure_installed = {
-          'go',
-          'lua',
-          'python',
-          'rust',
-          'typescript',
-          "typescript",
-          "tsx",
-          "css",
-          "html",
-          "vim",
-          "dockerfile",
-          "gitignore",
-          'vimdoc',
-          "markdown",
-        },
-        sync_install = false,
-        auto_install = true,
-        ignore_install = { "javascript" },
+			configs.setup({
+				ensure_installed = {
+					"go",
+					"lua",
+					"python",
+					"rust",
+					"typescript",
+					"typescript",
+					"tsx",
+					"css",
+					"html",
+					"vim",
+					"dockerfile",
+					"gitignore",
+					"vimdoc",
+					"markdown",
+				},
+				sync_install = false,
+				auto_install = true,
+				ignore_install = { "javascript" },
 
-        highlight = {
-          enable = true
-        },
-        indent = {
-          enable = true,
-          disable = { 'python' }
-        },
-      }
+				highlight = {
+					enable = true,
+				},
+				indent = {
+					enable = true,
+					disable = { "python" },
+				},
+			})
 
-      require('nvim-ts-autotag').setup({
-        opts = {
-          enable_close = true,          -- Auto close tags
-          enable_rename = true,         -- Auto rename pairs of tags
-          enable_close_on_slash = false -- Auto close on trailing </
-        },
-        per_filetype = {
-          ["html"] = {
-            enable_close = false
-          }
-        }
-      })
-    end
-  },
-
+			require("nvim-ts-autotag").setup({
+				opts = {
+					enable_close = true,
+					enable_rename = true,
+					enable_close_on_slash = false,
+				},
+			})
+		end,
+	},
 }

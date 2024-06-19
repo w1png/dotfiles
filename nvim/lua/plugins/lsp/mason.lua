@@ -13,13 +13,13 @@ return {
 			mason_lspconfig.setup({
 				automatic_installation = true,
 				ensure_installed = {
+					"eslint",
 					"tsserver",
 					"html",
 					"cssls",
 					"jsonls",
 					"lua_ls",
 					"tailwindcss",
-					"emmet_ls",
 					"pyright",
 					"gopls",
 				},
@@ -33,6 +33,7 @@ return {
 					"black",
 					"pyright",
 					"gopls",
+					"eslint",
 				},
 			})
 		end,

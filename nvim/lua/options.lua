@@ -1,7 +1,7 @@
 local opt = vim.opt
 
-opt.clipboard = 'unnamedplus'
-opt.mouse = 'a'
+opt.clipboard = "unnamedplus"
+opt.mouse = "a"
 
 opt.number = true
 opt.relativenumber = true
@@ -10,11 +10,11 @@ opt.wrap = false
 opt.scrolloff = 1
 opt.breakindent = true
 opt.undofile = true
-opt.signcolumn = 'yes'
-opt.completeopt = 'menuone,noselect'
+opt.signcolumn = "yes"
+opt.completeopt = "menuone,noselect"
 
 opt.hlsearch = false
-opt.ignorecase = false
+opt.ignorecase = true
 opt.smartcase = true
 
 opt.updatetime = 250

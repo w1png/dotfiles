@@ -6,7 +6,6 @@ return {
 		end,
 	},
 	{ "f-person/git-blame.nvim" },
-	{ "NvChad/nvim-colorizer.lua" },
 	{ "j-hui/fidget.nvim" },
 	{ "stevearc/dressing.nvim" },
 	{
