@@ -1,5 +1,19 @@
 return {
   {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require('gitsigns').setup()
+    end
+  },
+  {
+    'f-person/git-blame.nvim',
+    config = function()
+      require('gitblame').setup {
+        enabled = true,
+      }
+    end
+  },
+  {
     'NvChad/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup()
@@ -53,7 +67,7 @@ return {
               file = true,
               folder = true,
               folder_arrow = true,
-              git = false,
+              git = true,
             },
             glyphs = {
               default = "󰈚",
@@ -130,30 +144,6 @@ return {
       -- vim.cmd [[colorscheme vscode]]
       -- vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
     end
-  },
-  {
-    "rebelot/kanagawa.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('kanagawa').setup({
-        compile = false,
-        undercurl = true,
-        transparent = false,
-        dimInactive = false,
-      })
-
-      -- vim.cmd([[colorscheme kanagawa-dragon]])
-    end
-  },
-  {
-    'shaunsingh/nord.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.o.background = "dark"
-      -- vim.cmd([[colorscheme nord]])
-    end,
   },
   {
     "folke/tokyonight.nvim",
@@ -236,9 +226,6 @@ return {
       -- add any options here
     },
     config = function()
-      require("notify").setup({
-        background_colour = "#000000",
-      })
       require("noice").setup({
         lsp = {
           override = {
@@ -260,7 +247,6 @@ return {
     end,
     dependencies = {
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
     }
   },
 }

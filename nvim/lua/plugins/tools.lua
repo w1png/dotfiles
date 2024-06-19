@@ -25,7 +25,7 @@ return {
       vim.keymap.set('n', '<leader>/', ':lua require("Comment.api").toggle.linewise.current()<CR>', { silent = true })
       vim.keymap.set('v', '<leader>/', ':lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
         { silent = true })
-    end
+    end,
   },
   {
     'windwp/nvim-autopairs',

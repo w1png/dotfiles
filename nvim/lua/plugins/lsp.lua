@@ -1,17 +1,50 @@
 return {
   {
-    'stevearc/conform.nvim',
-    opts = {},
-    config = function()
-      require("conform").setup({
-        formatters_by_ft = {
-          lua = { "stylua" },
-          python = { "isort", "black" },
-          javascript = { { "prettierd", "prettier" } },
-          css = { "prettier" },
+    "nvimtools/none-ls.nvim",
+    event = "VeryLazy",
+    opts = function()
+      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+      local null_ls = require("null-ls")
+
+      return {
+        sources = {
+          null_ls.builtins.formatting.prettierd,
         },
+        on_attach = function(client, bufnr)
+          if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({
+              group = augroup,
+              buffer = bufnr,
+            })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr })
+              end,
+            })
+          end
+        end,
+      }
+    end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    config = function()
+      require('nvim-ts-autotag').setup({
+        opts = {
+          enable_close = true,          -- Auto close tags
+          enable_rename = true,         -- Auto rename pairs of tags
+          enable_close_on_slash = false -- Auto close on trailing </
+        },
+        per_filetype = {
+          ["html"] = {
+            enable_close = false
+          }
+        }
       })
-    end
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -20,7 +53,7 @@ return {
       local configs = require("nvim-treesitter.configs")
 
       configs.setup {
-        ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'vimdoc', "templ", "markdown" },
+        ensure_installed = { 'go', 'lua', 'python', 'rust', 'typescript', 'vimdoc', "templ", "markdown" },
         sync_install = false,
         auto_install = true,
         ignore_install = { "javascript" },
