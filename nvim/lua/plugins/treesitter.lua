@@ -2,9 +2,6 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = {
-			"windwp/nvim-ts-autotag",
-		},
 		build = ":TSUpdate",
 		config = function()
 			local configs = require("nvim-treesitter.configs")
@@ -36,14 +33,6 @@ return {
 				indent = {
 					enable = true,
 					disable = { "python" },
-				},
-			})
-
-			require("nvim-ts-autotag").setup({
-				opts = {
-					enable_close = true,
-					enable_rename = true,
-					enable_close_on_slash = false,
 				},
 			})
 		end,

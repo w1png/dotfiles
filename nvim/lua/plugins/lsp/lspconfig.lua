@@ -3,6 +3,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		"pmizio/typescript-tools.nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
 	},
@@ -16,6 +17,7 @@ return {
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
 		keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 		keymap.set("n", "<leader>gd", "<cmd>Telescope lsp_definitions<CR>")
+		keymap.set("n", "<leader>gu", "<cmd>Telescope lsp_references<CR>")
 		keymap.set("n", "<leader>ci", function()
 			vim.lsp.buf.code_action()
 		end)
@@ -52,38 +54,35 @@ return {
 					},
 				})
 			end,
-			["tsserver"] = function()
-				local function organize_imports()
-					local params = {
-						command = "_typescript.organizeImports",
-						arguments = { vim.api.nvim_buf_get_name(0) },
-						title = "",
-					}
-					vim.lsp.buf.execute_command(params)
-				end
-				lspconfig["tsserver"].setup({
-					capabilities = capabilities,
-					commands = {
-						OrganizeImports = {
-							organize_imports,
-							description = "Organize Imports",
+			["cssls"] = function()
+				lspconfig["cssls"].setup({
+					css = {
+						validate = true,
+						lint = {
+							unknownAtRules = "ignore",
 						},
 					},
 				})
 			end,
+			["tsserver"] = function()
+				-- lspconfig["tsserver"].setup({
+				-- 	capabilities = capabilities,
+				-- 	on_attach = function(client)
+				-- 		client.server_capabilities.documentFormattingProvider = false
+				-- 	end,
+				-- })
+			end,
 		})
 
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-			callback = function(ev)
-				local params = {
-					command = "_typescript.organizeImports",
-					arguments = { vim.api.nvim_buf_get_name(0) },
-					title = "",
-				}
-				vim.lsp.buf.execute_command(params)
-				vim.lsp.buf.format({ async = false })
+		local typescript_tools = require("typescript-tools")
+		typescript_tools.setup({
+			on_attach = function(client)
+				client.server_capabilities.documentFormattingProvider = false
 			end,
+			settings = {
+				separate_diagnostic_server = true,
+				expose_as_code_action = "all",
+			},
 		})
 	end,
 }

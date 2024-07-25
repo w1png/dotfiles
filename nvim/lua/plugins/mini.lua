@@ -27,7 +27,10 @@ return {
 					trim_right = ">",
 				},
 			})
-			vim.keymap.set("n", "<leader>e", ":lua MiniFiles.open()<CR>", { silent = true })
+
+			vim.keymap.set("n", "<leader>e", function()
+				MiniFiles.open(vim.api.nvim_buf_get_name(0))
+			end, { silent = true })
 
 			local hipatterns = require("mini.hipatterns")
 			hipatterns.setup({

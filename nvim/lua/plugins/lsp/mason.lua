@@ -13,7 +13,7 @@ return {
 			mason_lspconfig.setup({
 				automatic_installation = true,
 				ensure_installed = {
-					"eslint",
+					"biome",
 					"tsserver",
 					"html",
 					"cssls",
@@ -29,11 +29,11 @@ return {
 			mason_tool_installer.setup({
 				ensure_installed = {
 					"stylua",
-					"prettier",
+					"biome",
 					"black",
 					"pyright",
 					"gopls",
-					"eslint",
+					"biome",
 				},
 			})
 		end,
