@@ -7,9 +7,9 @@ return {
 			require("mini.surround").setup()
 			require("mini.pairs").setup()
 			require("mini.indentscope").setup()
-			require("mini.notify").setup()
+			require("mini.diff").setup()
 
-			require("mini.files").setup({
+			local files = require("mini.files").setup({
 				windows = {
 					preview = false,
 				},
@@ -54,6 +54,31 @@ return {
 					comment_visual = "<leader>/",
 				},
 			})
+
+			local extra = require("mini.extra")
+			extra.setup()
+			local pick = require("mini.pick")
+			pick.setup({
+				mappings = {
+					choose = "<Right>",
+					toggle_preview = "<Tab>",
+				},
+			})
+			vim.keymap.set("n", "<leader><leader>", function()
+				pick.builtin.files()
+			end)
+			vim.keymap.set("n", "<leader>gg", function()
+				pick.builtin.grep_live()
+			end)
+			vim.keymap.set("n", "<leader>gd", function()
+				extra.pickers.lsp({ scope = "definition" })
+			end)
+			vim.keymap.set("n", "<leader>gr", function()
+				extra.pickers.lsp({ scope = "references" })
+			end)
+			vim.keymap.set("n", "<leader>sd", function()
+				extra.pickers.diagnostic()
+			end)
 		end,
 	},
 }

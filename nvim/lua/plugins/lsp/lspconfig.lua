@@ -2,9 +2,10 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
+		-- "hrsh7th/cmp-nvim-lsp",
 		"pmizio/typescript-tools.nvim",
-		{ "antosha417/nvim-lsp-file-operations", config = true },
+		"nvim-lua/plenary.nvim",
+		-- { "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
 	},
 	config = function()
@@ -16,8 +17,6 @@ return {
 
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
 		keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
-		keymap.set("n", "<leader>gd", "<cmd>Telescope lsp_definitions<CR>")
-		keymap.set("n", "<leader>gu", "<cmd>Telescope lsp_references<CR>")
 		keymap.set("n", "<leader>ci", function()
 			vim.lsp.buf.code_action()
 		end)
