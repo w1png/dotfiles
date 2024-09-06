@@ -7,6 +7,7 @@ return {
 			local configs = require("nvim-treesitter.configs")
 
 			configs.setup({
+				modules = {},
 				ensure_installed = {
 					"go",
 					"lua",

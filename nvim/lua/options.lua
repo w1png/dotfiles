@@ -16,6 +16,7 @@ opt.completeopt = "menuone,noselect"
 opt.hlsearch = false
 opt.ignorecase = true
 opt.smartcase = true
+opt.smartcase = true
 
 opt.updatetime = 250
 

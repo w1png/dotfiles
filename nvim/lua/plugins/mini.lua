@@ -8,8 +8,9 @@ return {
 			require("mini.pairs").setup()
 			require("mini.indentscope").setup()
 			require("mini.diff").setup()
+			require("mini.icons").setup()
 
-			local files = require("mini.files").setup({
+			require("mini.files").setup({
 				windows = {
 					preview = false,
 				},
@@ -60,7 +61,7 @@ return {
 			local pick = require("mini.pick")
 			pick.setup({
 				mappings = {
-					choose = "<Right>",
+					choose = "<CR>",
 					toggle_preview = "<Tab>",
 				},
 			})

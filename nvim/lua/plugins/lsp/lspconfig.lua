@@ -71,6 +71,7 @@ return {
 				-- 	end,
 				-- })
 			end,
+			["biome"] = function() end,
 		})
 
 		local typescript_tools = require("typescript-tools")
