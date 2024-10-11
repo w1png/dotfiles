@@ -1,0 +1,65 @@
+export ZSH="$HOME/.oh-my-zsh"
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+zstyle ':omz:update' mode auto
+
+ENABLE_CORRECTION="false"
+HYPHEN_INSENSITIVE="true"
+
+plugins=(
+    git
+    tmux
+)
+
+export ZSH_TMUX_AUTOSTART=true
+export ZSH_TMUX_DEFAULT_SESSION_NAME="home"
+export ZSH_TMUX_FIXTERM=true
+
+unsetopt correct_all
+source $ZSH/oh-my-zsh.sh
+
+# misc
+alias vim="nvim"
+alias git_undo="git reset --soft HEAD~1"
+alias ls="eza --icons"
+alias ll="eza --icons -l"
+alias tree="eza --icons --tree"
+alias cat="bat"
+alias lofi="osascript -e 'tell application \"Spotify\" to play track \"spotify:playlist:37i9dQZF1DWWQRwui0ExPn\"' && osascript -e 'tell application \"Spotify\" to shuffling enabled'"
+alias cd="z"
+alias sourcezsh="source ~/.zshrc"
+
+export PATH="/usr/local/share/dotnet:$PATH"
+export PATH="$(brew --prefix)/opt/python@3.11/libexec/bin:$PATH"
+export PATH=$PATH:$(go env GOPATH)/bin
+export PATH="/Users/w1png/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+
+export GPG_TTY=$(tty)
+
+eval "$(zoxide init zsh)"
+
+FZF_ALT_C_COMMAND="fd -t d . $HOME"
+source <(fzf --zsh)
+
+bindkey -r '^T'
+bindkey '^G' fzf-file-widget
+
+[ -s "/Users/w1png/.bun/_bun" ] && source "/Users/w1png/.bun/_bun"
+
+PS1="%{$fg[yellow]%}%~ $%b "
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/w1png/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
