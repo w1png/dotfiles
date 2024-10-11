@@ -41,6 +41,7 @@
             pkgs.discord
             pkgs.qbittorrent
             pkgs.raycast
+            pkgs.arc-browser
 
             # Terminal utils
             pkgs.httpie
@@ -67,12 +68,22 @@
             "the-unarchiver"
             "nikitabobko/tap/aerospace"
             "prismlauncher"
+            "orbstack"
           ];
           onActivation.cleanup = "zap";
           masApps = {
             "Telegram" = 747648890;
             "WhatsApp" = 310633997;
+            "Wireguard" = 1451685025;
          };
+        };
+
+        system.defaults = {
+          dock.autohide = true;
+          finder.AppleShowAllExtensions = true;
+          finder.FXPreferredViewStyle = "clmv";
+          loginwindow.GuestEnabled  = false;
+          NSGlobalDomain.AppleInterfaceStyle = "Dark";
         };
 
         # Symlink applications to /Applications/Nix
@@ -96,24 +107,13 @@
           done
         '';
 
-      # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
-      # nix.package = pkgs.nix;
-
-      # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
-
       programs.zsh.enable = true;
-
-      # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      users.users.w1png.home = "/Users/w1png";
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
       system.stateVersion = 5;
 
+      users.users.w1png.home = "/Users/w1png";
       nixpkgs.hostPlatform = "aarch64-darwin";
     };
   in
