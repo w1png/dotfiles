@@ -19,6 +19,8 @@ export ZSH_TMUX_FIXTERM=true
 unsetopt correct_all
 source $ZSH/oh-my-zsh.sh
 
+export EDITOR="nvim"
+
 # misc
 alias vim="nvim"
 alias git_undo="git reset --soft HEAD~1"

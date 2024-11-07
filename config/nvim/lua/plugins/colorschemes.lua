@@ -14,7 +14,12 @@ return {
 						vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
 					end,
 				},
-				"rose-pine/neovim",
+				{
+					"rose-pine/neovim",
+					after = function()
+						vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
+					end,
+				},
 			})
 		end,
 	},

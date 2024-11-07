@@ -36,6 +36,8 @@
             pkgs.go
             pkgs.bun
             pkgs.python313
+            pkgs.python313Packages.pip
+            pkgs.cargo
 
             # GUI apps
             pkgs.discord
@@ -59,6 +61,9 @@
 
             # Misc
             pkgs.mkalias
+            pkgs.ffmpeg
+            pkgs.cmake
+            pkgs.cloudflared
         ];
 
         homebrew = {
@@ -69,6 +74,7 @@
             "nikitabobko/tap/aerospace"
             "prismlauncher"
             "orbstack"
+            "MonitorControl"
           ];
           onActivation.cleanup = "zap";
           masApps = {

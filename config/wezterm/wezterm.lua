@@ -3,10 +3,10 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 local padding = 40
-local opacity = 0.6
+local opacity = 0.7
 local blur = 20
--- local colorscheme = "rose-pine-moon"
-local colorscheme = "Gruvbox dark, medium (base16)"
+local colorscheme = "rose-pine-moon"
+-- local colorscheme = "Gruvbox dark, medium (base16)"
 
 local JETBRAINS_MONO_NL = "JetBrainsMonoNL Nerd Font"
 local FIRA_CODE = "Fira Code"
@@ -14,7 +14,7 @@ local GEIST_MONO = "Geist Mono"
 
 local font = {
 	face = GEIST_MONO,
-	size = 14,
+	size = 16,
 }
 
 config.window_padding = {

@@ -14,7 +14,6 @@ return {
 				automatic_installation = true,
 				ensure_installed = {
 					"biome",
-					"tsserver",
 					"html",
 					"cssls",
 					"jsonls",
