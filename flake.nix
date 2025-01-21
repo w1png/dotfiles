@@ -20,7 +20,9 @@
         fira-code
         fira-code-symbols
         geist-font
-        nerdfonts
+        nerd-fonts.fira-mono
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.fira-code
       ];
 
       environment.systemPackages =
@@ -44,6 +46,7 @@
             pkgs.qbittorrent
             pkgs.raycast
             pkgs.arc-browser
+            pkgs.loopwm
 
             # Terminal utils
             pkgs.httpie
@@ -58,8 +61,11 @@
             pkgs.bat
             pkgs.duf
             pkgs.ripgrep
+            pkgs.helmfile
 
             # Misc
+            pkgs.minikube
+            pkgs.kubernetes-helm
             pkgs.mkalias
             pkgs.ffmpeg
             pkgs.cmake
@@ -71,7 +77,6 @@
           casks = [
             "wezterm"
             "the-unarchiver"
-            "nikitabobko/tap/aerospace"
             "prismlauncher"
             "orbstack"
             "MonitorControl"
@@ -81,6 +86,7 @@
             "Telegram" = 747648890;
             "WhatsApp" = 310633997;
             "Wireguard" = 1451685025;
+            "V2Ray" = 6446814690;
          };
         };
 
@@ -106,7 +112,7 @@
           rm -rf /Applications/Nix\ Apps
           mkdir -p /Applications/Nix\ Apps
           find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-          while read src; do
+          while read -r src; do
             app_name=$(basename "$src")
             echo "copying $src" >&2
             ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
@@ -124,7 +130,6 @@
     };
   in
   {
-    # Build darwin flake using:
     # $ darwin-rebuild build --flake .#MacBookPro
     darwinConfigurations."MacBookPro" = nix-darwin.lib.darwinSystem {
       modules = [ 

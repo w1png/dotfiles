@@ -12,6 +12,8 @@ plugins=(
     tmux
 )
 
+# PS1="%{$fg[yellow]%}%~ $%b "
+export ZSH_THEME="awesomepanda"
 export ZSH_TMUX_AUTOSTART=true
 export ZSH_TMUX_DEFAULT_SESSION_NAME="home"
 export ZSH_TMUX_FIXTERM=true
@@ -28,21 +30,15 @@ alias ls="eza --icons"
 alias ll="eza --icons -l"
 alias tree="eza --icons --tree"
 alias cat="bat"
-alias lofi="osascript -e 'tell application \"Spotify\" to play track \"spotify:playlist:37i9dQZF1DWWQRwui0ExPn\"' && osascript -e 'tell application \"Spotify\" to shuffling enabled'"
 alias cd="z"
 alias sourcezsh="source ~/.zshrc"
-
-export PATH="/usr/local/share/dotnet:$PATH"
-export PATH="$(brew --prefix)/opt/python@3.11/libexec/bin:$PATH"
-export PATH=$PATH:$(go env GOPATH)/bin
-export PATH="/Users/w1png/.local/bin:$PATH"
-export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export BUN_INSTALL="$HOME/.bun"
+alias k="kubectl --insecure-skip-tls-verify "
 
 export GPG_TTY=$(tty)
 
 eval "$(zoxide init zsh)"
+
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 FZF_ALT_C_COMMAND="fd -t d . $HOME"
 source <(fzf --zsh)
@@ -50,18 +46,18 @@ source <(fzf --zsh)
 bindkey -r '^T'
 bindkey '^G' fzf-file-widget
 
-[ -s "/Users/w1png/.bun/_bun" ] && source "/Users/w1png/.bun/_bun"
-
-PS1="%{$fg[yellow]%}%~ $%b "
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "/Users/w1png/.bun/_bun" ] && source "/Users/w1png/.bun/_bun"
 
-# pnpm
-export PNPM_HOME="/Users/w1png/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+# deno
+export PATH="$HOME/.deno/bin:$PATH"
+
+# go
+export PATH=$PATH:$(go env GOPATH)/bin
+
+# other PATH stuff
+export PATH="$(brew --prefix)/opt/python@3.11/libexec/bin:$PATH"
+export PATH="/Users/w1png/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
