@@ -1,13 +1,10 @@
-{ pkgs, ... }:
+{ ... }:
 { 
   programs.tmux = {
     enable = true;
     terminal = "xterm-256color";
     shortcut = "space";
     baseIndex = 1;
-    plugins = with pkgs.tmuxPlugins;
-      [
-      ];
     keyMode = "vi";
     extraConfig = "
       set-option -ga terminal-overrides \",xterm-256color:Tc\"

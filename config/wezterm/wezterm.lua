@@ -3,12 +3,12 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 local padding = 40
-local opacity = 1
+local opacity = 0.7
 local blur = 20
--- local colorscheme = "rose-pine-moon"
+local colorscheme = "rose-pine-moon"
 -- local colorscheme = "Gruvbox dark, medium (base16)"
 -- local colorscheme = "tokyonight"
-local colorscheme = "Gruber (base16)"
+-- local colorscheme = "Gruber (base16)"
 
 local JETBRAINS_MONO_NL = "JetBrainsMonoNL Nerd Font"
 local FIRA_CODE = "Fira Code"

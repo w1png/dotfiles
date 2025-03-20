@@ -42,11 +42,9 @@
             pkgs.cargo
 
             # GUI apps
-            pkgs.discord
             pkgs.qbittorrent
             pkgs.raycast
             pkgs.arc-browser
-            pkgs.loopwm
 
             # Terminal utils
             pkgs.httpie
@@ -61,11 +59,8 @@
             pkgs.bat
             pkgs.duf
             pkgs.ripgrep
-            pkgs.helmfile
 
             # Misc
-            pkgs.minikube
-            pkgs.kubernetes-helm
             pkgs.mkalias
             pkgs.ffmpeg
             pkgs.cmake
@@ -80,13 +75,17 @@
             "prismlauncher"
             "orbstack"
             "MonitorControl"
+            "loop"
+            "mos"
+            "discord"
+            "redis-insight"
           ];
           onActivation.cleanup = "zap";
           masApps = {
             "Telegram" = 747648890;
             "WhatsApp" = 310633997;
             "Wireguard" = 1451685025;
-            "V2Ray" = 6446814690;
+            # "V2Ray" = 6446814690;
          };
         };
 
@@ -119,7 +118,7 @@
           done
         '';
 
-      services.nix-daemon.enable = true;
+      # services.nix-daemon.enable = true;
       nix.settings.experimental-features = "nix-command flakes";
       programs.zsh.enable = true;
       system.configurationRevision = self.rev or self.dirtyRev or null;

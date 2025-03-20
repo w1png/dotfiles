@@ -8,6 +8,7 @@ return {
 		require("mini.indentscope").setup()
 		require("mini.diff").setup()
 		require("mini.icons").setup()
+		require("mini.icons").setup()
 
 		local MiniFiles = require("mini.files")
 		MiniFiles.setup({
@@ -63,6 +64,9 @@ return {
 		end)
 		vim.keymap.set("n", "<leader>gd", function()
 			extra.pickers.lsp({ scope = "definition" })
+		end)
+		vim.keymap.set("n", "<leader>gs", function()
+			extra.pickers.lsp({ scope = "document_symbol" })
 		end)
 		vim.keymap.set("n", "<leader>gr", function()
 			extra.pickers.lsp({ scope = "references" })
