@@ -1,11 +1,15 @@
 return {
-	"jose-elias-alvarez/null-ls.nvim",
-	opts = function(_, opts)
-		local biome = require("null-ls").builtins.formatting.rome.with({
+	"nvimtools/none-ls.nvim",
+	config = function()
+		local none_ls = require("null-ls")
+		local biome = none_ls.builtins.formatting.biome.with({
 			command = "biome",
+			args = { "format", "--stdin", "$FILENAME" },
 		})
-		opts.sources = vim.list_extend(opts.sources or {}, {
-			biome,
+		none_ls.setup({
+			sources = {
+				biome,
+			},
 		})
 	end,
 }
