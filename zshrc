@@ -20,15 +20,16 @@ unsetopt correct_all
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR="nvim"
+export MANPAGER="nvim +Man!"
+export MANROFFOPT="-c"
 
 # misc
 alias vim="nvim"
 alias git_undo="git reset --soft HEAD~1"
 alias ls="eza --icons"
-alias ll="eza --icons -l"
-alias cat="bat"
+alias ll="eza --icons -la"
+alias lt="eza --icons -l --tree"
 alias cd="z"
-alias k="kubectl --insecure-skip-tls-verify "
 
 export GPG_TTY=$(tty)
 
@@ -36,19 +37,10 @@ eval "$(zoxide init zsh)"
 
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
-FZF_ALT_C_COMMAND="fd -t d . $HOME"
-source <(fzf --zsh)
-
-bindkey -r '^T'
-bindkey '^G' fzf-file-widget
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "/Users/w1png/.bun/_bun" ] && source "/Users/w1png/.bun/_bun"
-
-# deno
-export PATH="$HOME/.deno/bin:$PATH"
 
 # go
 export PATH=$PATH:$(go env GOPATH)/bin
@@ -57,3 +49,5 @@ export PATH=$PATH:$(go env GOPATH)/bin
 export PATH="$(brew --prefix)/opt/python@3.11/libexec/bin:$PATH"
 export PATH="/Users/w1png/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"

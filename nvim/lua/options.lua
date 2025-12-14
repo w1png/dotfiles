@@ -32,3 +32,14 @@ opt.showmode = false
 opt.laststatus = 0
 opt.ruler = false
 opt.showcmd = false
+
+vim.g.man_hardwrap = false
+vim.env.MANPAGER = ""
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "man",
+	callback = function()
+		vim.bo.buflisted = false
+		vim.wo.conceallevel = 0
+	end,
+})
