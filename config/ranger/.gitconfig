@@ -1,9 +1,0 @@
-[credential]
-	helper = store
-[user]
-	email = w1png@yandex.ru
-	name = Denis Smirnov
-[init]
-	defaultBranch = master
-[push]
-	autoSetupRemote = true

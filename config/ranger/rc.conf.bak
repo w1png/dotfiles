@@ -1,4 +1,0 @@
-set preview_images true
-set preview_images_method kitty
-
-set preview_script /home/w1png/.config/ranger/scope.sh
