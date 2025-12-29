@@ -224,3 +224,8 @@ now(function()
 	require("options")
 	require("keymaps")
 end)
+
+-- create a command called :notes that will open ~/notes/plans.md
+vim.api.nvim_create_user_command("Notes", function()
+	vim.cmd("edit ~/notes/plans.md")
+end, {})
