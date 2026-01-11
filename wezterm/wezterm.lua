@@ -4,7 +4,7 @@ local config = wezterm.config_builder()
 
 local paddingX = 32
 local paddingY = 16
-local opacity = 1
+local opacity = 0.7
 local blur = 8
 
 local catppuccin = "Catppuccin Mocha"
@@ -14,7 +14,7 @@ local gruber = "Gruber (base16)"
 local apple_classic = "Apple Classic"
 local tokyonight = "Tokyo Night (Gogh)"
 
-config.color_scheme = gruvbox
+config.color_scheme = gruber
 
 local JETBRAINS_MONO_NL = "JetBrainsMonoNL Nerd Font"
 local FIRA_CODE = "FiraCode Nerd Font Mono"

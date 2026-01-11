@@ -65,12 +65,6 @@ now(function()
 			after = transparent_bg,
 		},
 		{
-			"stevedylandev/ansi-nvim",
-			after = function()
-				vim.opt.termguicolors = false
-			end,
-		},
-		{
 			"blazkowolf/gruber-darker.nvim",
 			after = transparent_bg,
 		},
@@ -79,12 +73,30 @@ now(function()
 		{
 			"Mofiqul/vscode.nvim",
 			after = function()
-				require("vscode").setup({ transparent = false, italic_comments = true, underline_links = true })
+				require("vscode").setup({ transparent = true, italic_comments = true, underline_links = true })
 				transparent_bg()
 			end,
 		},
 		{ "rose-pine/neovim", after = transparent_bg },
 		"default",
+	})
+end)
+
+now(function()
+	add({
+		source = "nvim-treesitter/nvim-treesitter",
+	})
+
+	require("nvim-treesitter.configs").setup({
+		modules = {},
+		sync_install = false,
+		auto_install = true,
+		highlight = {
+			enable = true,
+		},
+		indent = {
+			enable = true,
+		},
 	})
 end)
 
@@ -97,16 +109,11 @@ now(function()
 			"nvim-lua/plenary.nvim",
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
 		},
 	})
 
 	add({
 		source = "stevearc/conform.nvim",
-	})
-
-	add({
-		source = "saghen/blink.cmp",
 	})
 
 	---@module 'blink.cmp'
@@ -135,7 +142,6 @@ now(function()
 
 	-- Mason setup
 	require("mason").setup()
-	require("mason-tool-installer").setup({})
 	local mason_lspconfig = require("mason-lspconfig")
 
 	-- LSP Config
@@ -168,7 +174,7 @@ now(function()
 			python = { "isort", "black" },
 		},
 		format_on_save = {
-			lsp_fallback = true,
+			lsp_fallback = false,
 			async = false,
 			timeout_ms = 1000,
 		},
@@ -189,29 +195,6 @@ now(function()
 	})
 end)
 
-later(function()
-	add({
-		source = "nvim-treesitter/nvim-treesitter",
-	})
-
-	local configs = require("nvim-treesitter.configs")
-
-	configs.setup({
-		modules = {},
-		sync_install = false,
-		auto_install = true,
-		ignore_install = { "javascript" },
-
-		highlight = {
-			enable = true,
-		},
-		indent = {
-			enable = true,
-			disable = { "python" },
-		},
-	})
-end)
-
 now(function()
 	local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 	vim.api.nvim_create_autocmd("TextYankPost", {
@@ -221,11 +204,85 @@ now(function()
 		group = highlight_group,
 		pattern = "*",
 	})
-	require("options")
-	require("keymaps")
 end)
 
--- create a command called :notes that will open ~/notes/plans.md
-vim.api.nvim_create_user_command("Notes", function()
-	vim.cmd("edit ~/notes/plans.md")
-end, {})
+now(function()
+	local opt = vim.opt
+	opt.clipboard = "unnamedplus"
+	opt.mouse = "a"
+	opt.number = true
+	opt.relativenumber = true
+	opt.wrap = false
+	opt.scrolloff = 10
+	opt.undofile = true
+	opt.completeopt = "menuone,noselect"
+	opt.hlsearch = false
+	opt.ignorecase = true
+	opt.smartcase = true
+	opt.updatetime = 250
+	opt.termguicolors = true
+	opt.background = "dark"
+	opt.expandtab = true
+	opt.tabstop = 2
+	opt.shiftwidth = 2
+	opt.softtabstop = 2
+	opt.showmode = false
+	opt.laststatus = 0
+	opt.ruler = false
+	opt.showcmd = false
+
+	vim.g.man_hardwrap = false
+	vim.env.MANPAGER = ""
+
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "man",
+		callback = function()
+			vim.bo.buflisted = false
+			vim.wo.conceallevel = 0
+		end,
+	})
+end)
+
+now(function()
+	vim.g.mapleader = " "
+	vim.g.maplocalleader = " "
+
+	local keymap = vim.keymap
+
+	keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+
+	-- Window navigation
+	keymap.set("n", "<leader>l", "<cmd>wincmd l<CR>", { silent = true })
+	keymap.set("n", "<leader>h", "<cmd>wincmd h<CR>", { silent = true })
+	keymap.set("n", "<leader>k", "<cmd>wincmd k<CR>", { silent = true })
+	keymap.set("n", "<leader>j", "<cmd>wincmd j<CR>", { silent = true })
+
+	-- Diagnostics
+	keymap.set("n", "<C-j>", "<cmd>lua vim.diagnostic.open_float()<CR>", { silent = true })
+
+	-- LSP keymaps
+	keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+	keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+	keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
+
+	-- Mini keymaps
+	keymap.set("n", "<leader>e", function()
+		require("mini.files").open(vim.api.nvim_buf_get_name(0))
+	end, { silent = true })
+
+	keymap.set("n", "<leader><leader>", function()
+		require("mini.pick").builtin.files({ tool = "rg" })
+	end)
+	keymap.set("n", "<leader>gg", function()
+		require("mini.pick").builtin.grep_live({ tool = "rg" })
+	end)
+	keymap.set("n", "<leader>gd", function()
+		require("mini.extra").pickers.lsp({ scope = "definition" })
+	end)
+	keymap.set("n", "<leader>gr", function()
+		require("mini.extra").pickers.lsp({ scope = "references" })
+	end)
+	keymap.set("n", "<leader>sd", function()
+		require("mini.extra").pickers.diagnostic()
+	end)
+end)

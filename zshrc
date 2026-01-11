@@ -25,6 +25,7 @@ export MANROFFOPT="-c"
 
 # misc
 alias vim="nvim"
+alias k="kubectl"
 alias git_undo="git reset --soft HEAD~1"
 alias ls="eza --icons"
 alias ll="eza --icons -la"
@@ -37,17 +38,14 @@ eval "$(zoxide init zsh)"
 
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
-# bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "/Users/w1png/.bun/_bun" ] && source "/Users/w1png/.bun/_bun"
-
-# go
 export PATH=$PATH:$(go env GOPATH)/bin
-
-# other PATH stuff
 export PATH="$(brew --prefix)/opt/python@3.11/libexec/bin:$PATH"
 export PATH="/Users/w1png/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
+
+bindkey -v
