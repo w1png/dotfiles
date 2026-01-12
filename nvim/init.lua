@@ -43,12 +43,34 @@ now(function()
 		},
 	})
 
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "MiniFilesBufferCreate",
+		callback = function(args)
+			local b = args.data.buf_id
+			vim.keymap.set("n", "go", function()
+				local entry = require("mini.files").get_fs_entry()
+				if not entry then
+					return
+				end
+				vim.fn.system({ "open", entry.path })
+			end, { buffer = b, desc = "OS open" })
+			vim.keymap.set("n", "gy", function()
+				local entry = require("mini.files").get_fs_entry()
+				if not entry then
+					return
+				end
+				vim.fn.setreg("+", entry.path)
+				vim.notify("Copied path to clipboard")
+			end, { buffer = b, desc = "Yank path" })
+		end,
+	})
+
 	require("mini.comment").setup({ mappings = { comment_line = "<leader>/", comment_visual = "<leader>/" } })
 	require("mini.extra").setup()
 	require("mini.pick").setup({ mappings = { choose = "<CR>", toggle_preview = "<Tab>" } })
 	require("mini.misc").setup()
 
-	vim.keymap.set("n", "<leader>bb", require("mini.misc").zoom, { desc = "Zoom" })
+	vim.keymap.set("n", "<leader>zz", require("mini.misc").zoom, { desc = "Zoom" })
 end)
 
 now(function()
@@ -233,17 +255,9 @@ now(function()
 
 	vim.g.man_hardwrap = false
 	vim.env.MANPAGER = ""
-
-	vim.api.nvim_create_autocmd("FileType", {
-		pattern = "man",
-		callback = function()
-			vim.bo.buflisted = false
-			vim.wo.conceallevel = 0
-		end,
-	})
 end)
 
-now(function()
+later(function()
 	vim.g.mapleader = " "
 	vim.g.maplocalleader = " "
 
@@ -276,6 +290,14 @@ now(function()
 	keymap.set("n", "<leader>gg", function()
 		require("mini.pick").builtin.grep_live({ tool = "rg" })
 	end)
+
+	keymap.set("n", "<leader>gc", function()
+		require("mini.extra").pickers.git_commits()
+	end)
+	keymap.set("n", "<leader>gh", function()
+		require("mini.extra").pickers.git_hunks()
+	end)
+
 	keymap.set("n", "<leader>gd", function()
 		require("mini.extra").pickers.lsp({ scope = "definition" })
 	end)
