@@ -31,6 +31,7 @@ alias ls="eza --icons --group-directories-first"
 alias ll="eza --icons -la"
 alias lt="eza --icons -l --tree"
 alias cd="z"
+alias doas="sudo"
 
 export GPG_TTY=$(tty)
 

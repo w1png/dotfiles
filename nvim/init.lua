@@ -67,7 +67,15 @@ now(function()
 
 	require("mini.comment").setup({ mappings = { comment_line = "<leader>/", comment_visual = "<leader>/" } })
 	require("mini.extra").setup()
-	require("mini.pick").setup({ mappings = { choose = "<CR>", toggle_preview = "<Tab>" } })
+	require("mini.pick").setup({
+		mappings = {
+			choose = "<CR>",
+			toggle_preview = "<Tab>",
+			move_up = "<C-k>",
+			move_down = "<C-j>",
+			move_start = "<C-g>",
+		},
+	})
 	require("mini.misc").setup()
 
 	vim.keymap.set("n", "<leader>zz", require("mini.misc").zoom, { desc = "Zoom" })
@@ -92,6 +100,14 @@ now(function()
 		},
 		{ "catppuccin/nvim", after = transparent_bg },
 		{ "ellisonleao/gruvbox.nvim", after = void }, -- after = transparent_bg },
+		{
+			"navarasu/onedark.nvim",
+			after = function()
+				require("onedark").setup({
+					style = "darker",
+				})
+			end,
+		},
 		{
 			"Mofiqul/vscode.nvim",
 			after = function()
