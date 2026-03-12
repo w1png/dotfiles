@@ -118,6 +118,12 @@ now(function()
 		{ "rose-pine/neovim", after = transparent_bg },
 		"default",
 	})
+
+	add({
+		source = "f-person/git-blame.nvim",
+	})
+
+	require("gitblame").setup()
 end)
 
 now(function()
