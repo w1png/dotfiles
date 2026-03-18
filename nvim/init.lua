@@ -131,16 +131,44 @@ now(function()
 		source = "nvim-treesitter/nvim-treesitter",
 	})
 
-	require("nvim-treesitter.configs").setup({
-		modules = {},
-		sync_install = false,
-		auto_install = true,
-		highlight = {
-			enable = true,
+	local treesitter = require("nvim-treesitter")
+	treesitter.setup()
+	-- treesitter.install({
+	-- 	"go",
+	-- 	"tsx",
+	-- 	"jsx",
+	-- 	"vim",
+	-- 	"vimdoc",
+	-- 	"query",
+	-- 	"lua",
+	-- 	"c",
+	-- 	"javascript",
+	-- 	"typescript",
+	-- 	"html",
+	-- 	"sql",
+	-- 	"css",
+	-- })
+
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = {
+			"go",
+			"tsx",
+			"jsx",
+			"vim",
+			"vimdoc",
+			"query",
+			"lua",
+			"c",
+			"javascript",
+			"typescript",
+			"html",
+			"sql",
+			"css",
 		},
-		indent = {
-			enable = true,
-		},
+		callback = function()
+			vim.treesitter.start()
+			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		end,
 	})
 end)
 
@@ -154,6 +182,25 @@ now(function()
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 		},
+	})
+
+	add({
+		source = "ray-x/go.nvim",
+		depends = {
+			"ray-x/guihua.lua",
+			"neovim/nvim-lspconfig",
+			"nvim-treesitter/nvim-treesitter",
+		},
+	})
+
+	require("go").setup()
+	local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		pattern = "*.go",
+		callback = function()
+			require("go.format").goimports()
+		end,
+		group = format_sync_grp,
 	})
 
 	add({
