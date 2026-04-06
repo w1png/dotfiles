@@ -116,14 +116,6 @@ map("v", "<", "<gv")
 map("v", ">", ">gv")
 map("v", "p", '"_dP', { noremap = true, silent = true })
 
--- Simple auto-pairs
-map("i", "`", "``<Left>")
-map("i", '"', '""<Left>')
-map("i", "(", "()<Left>")
-map("i", "[", "[]<Left>")
-map("i", "{", "{}<Left>")
-map("i", "<", "<><Left>")
-
 map({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- LSP keymaps
@@ -335,7 +327,7 @@ require("themify").setup({
 
 require("gitblame").setup()
 require("supermaven-nvim").setup({ keymaps = { accept_suggestion = "<C-g>" } })
-require("nvim-treesitter").setup()
+require("nvim-treesitter").setup({ highlight = { enable = true }, indent = { enable = true } })
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
@@ -359,6 +351,13 @@ vim.api.nvim_create_autocmd("FileType", {
 			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 		end
 	end,
+})
+
+require("mini.ai").setup({
+	search_method = "cover_or_next",
+	custom_textobjects = {
+		F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+	},
 })
 
 require("go").setup()
@@ -413,15 +412,8 @@ vim.lsp.config("lua_ls", {
 mason_lspconfig.setup({
 	automatic_installation = true,
 	handlers = {
-
 		function(server_name)
-			local config = { capabilities = capabilities }
-			if server_name == "lua_ls" then
-				config.settings = {
-					Lua = { diagnostics = { globals = { "vim", "MiniDeps" } } },
-				}
-			end
-			lspconfig[server_name].setup(config)
+			lspconfig[server_name].setup({ capabilities = capabilities })
 		end,
 	},
 })
