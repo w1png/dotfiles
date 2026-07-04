@@ -31,6 +31,7 @@ alias ls="eza --icons --group-directories-first"
 alias ll="eza --icons -la"
 alias lt="eza --icons -l --tree"
 alias cd="z"
+alias oc="opencode"
 alias doas="sudo"
 
 export GPG_TTY=$(tty)
@@ -48,5 +49,6 @@ export PATH="/Users/w1png/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
+export PATH="$HOME/scripts:$PATH"
 
 bindkey -v
