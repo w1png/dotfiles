@@ -13,5 +13,6 @@
       "*.env*": "deny",
       "*.env.example": "allow"
     }
-  }
+  },
+  "default_agent": "plan"
 }
