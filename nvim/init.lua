@@ -5,23 +5,33 @@ local augroup = function(name)
 	return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
 end
 
-vim.pack.add({
-	"https://github.com/nvim-lua/plenary.nvim",
+vim.g.colors_name = "default"
+local transparentBg = function()
+	vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
+end
 
+transparentBg()
+
+-- List of colorschemes I use
+-- "folke/tokyonight.nvim"
+-- "blazkowolf/gruber-darker.nvim"
+-- "catppuccin/nvim", after = transparent },
+-- "ellisonleao/gruvbox.nvim", after = transparent },
+-- "navarasu/onedark"
+-- "Mofiqul/vscode.nvim"
+-- "rose-pine/neovim"
+-- "default"
+
+vim.pack.add({
 	"https://github.com/nvim-mini/mini.nvim",
-	"https://github.com/LmanTW/themify.nvim",
-	"https://github.com/f-person/git-blame.nvim",
-	"https://github.com/supermaven-inc/supermaven-nvim",
+	"https://github.com/monkoose/neocodeium",
 
 	-- LSP & related
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/saghen/blink.cmp",
-	"https://github.com/saghen/blink.compat",
 	"https://github.com/williamboman/mason.nvim",
 	"https://github.com/williamboman/mason-lspconfig.nvim",
-	"https://github.com/ray-x/go.nvim",
-	"https://github.com/ray-x/guihua.lua",
 	"https://github.com/stevearc/conform.nvim",
 })
 
@@ -67,13 +77,15 @@ opt.timeoutlen = 300
 opt.ttimeoutlen = 0
 opt.autoread = true
 opt.autowrite = true
-opt.completeopt = "menuone,noselect"
 opt.backspace = "indent,eol,start"
 opt.encoding = "UTF-8"
 opt.smoothscroll = true
 opt.formatoptions = "jcroqlnt"
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
+opt.redrawtime = 10000
+opt.maxmempattern = 20000
+opt.list = false
 
 -- Windows & Splits
 opt.splitbelow = true
@@ -81,27 +93,12 @@ opt.splitright = true
 opt.splitkeep = "screen"
 opt.diffopt:append("linematch:60")
 
--- Performance tuning
-opt.redrawtime = 10000
-opt.maxmempattern = 20000
-opt.list = false
-
 -- Global stuff
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.markdown_recommended_style = 0
 vim.g.man_hardwrap = false
 vim.env.MANPAGER = ""
-
--- Window navigation
-map("n", "<C-h>", "<C-w>h", { remap = true })
-map("n", "<C-j>", "<C-w>j", { remap = true })
-map("n", "<C-k>", "<C-w>k", { remap = true })
-map("n", "<C-l>", "<C-w>l", { remap = true })
-
--- Split creation
-map("n", "<leader>sh", "<C-w>s", { desc = "Split horizontal" })
-map("n", "<leader>sl", "<C-w>v", { desc = "Split vertical" })
 
 -- Better vertical movement
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -144,7 +141,6 @@ vim.api.nvim_create_autocmd("VimResized", {
 vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("close_with_q"),
 	pattern = {
-		"PlenaryTestPopup",
 		"checkhealth",
 		"dbout",
 		"gitsigns-blame",
@@ -201,18 +197,9 @@ vim.filetype.add({
 	},
 })
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	group = augroup("env_filetype"),
-	pattern = { "*.env", ".env.*" },
-	callback = function()
-		vim.opt_local.filetype = "sh"
-	end,
-})
-
 -- Plugin Setup
 
 -- Mini.nvim
-require("mini.basics").setup()
 require("mini.surround").setup()
 require("mini.pairs").setup()
 require("mini.indentscope").setup()
@@ -298,36 +285,52 @@ vim.api.nvim_create_autocmd("User", {
 
 map("n", "<leader>zz", require("mini.misc").zoom, { desc = "Zoom window" })
 
--- Colorschemes
-local transparent = function()
-	vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
-end
+vim.keymap.set("n", "<leader>gb", function()
+	local file = vim.api.nvim_buf_get_name(0)
+	local line = vim.api.nvim_win_get_cursor(0)[1]
 
-require("themify").setup({
-	{ "folke/tokyonight.nvim", after = transparent },
-	{ "blazkowolf/gruber-darker.nvim", after = transparent },
-	{ "catppuccin/nvim", after = transparent },
-	{ "ellisonleao/gruvbox.nvim", after = transparent },
-	{
-		"navarasu/onedark.nvim",
-		after = function()
-			require("onedark").setup({ style = "darker" })
-		end,
-	},
-	{
-		"Mofiqul/vscode.nvim",
-		after = function()
-			require("vscode").setup({ transparent = true })
-			transparent()
-		end,
-	},
-	{ "rose-pine/neovim", after = transparent },
-	"default",
-})
+	vim.system({
+		"git",
+		"blame",
+		"-L",
+		line .. "," .. line,
+		"--porcelain",
+		"--",
+		file,
+	}, { text = true }, function(result)
+		vim.schedule(function()
+			if result.code ~= 0 then
+				vim.notify(result.stderr, vim.log.levels.ERROR)
+				return
+			end
 
-require("gitblame").setup()
-require("supermaven-nvim").setup({ keymaps = { accept_suggestion = "<C-g>" } })
-require("nvim-treesitter").setup({ highlight = { enable = true }, indent = { enable = true } })
+			local hash = result.stdout:match("^([^%s]+)")
+			local author = result.stdout:match("\nauthor ([^\n]+)")
+			local summary = result.stdout:match("\nsummary ([^\n]+)")
+
+			if hash then
+				hash = hash:sub(1, 7)
+			else
+				hash = "0000000"
+			end
+
+			if not author then
+				author = "Not committed yet"
+			end
+
+			local text = hash .. " • " .. author
+			if summary then
+				text = text .. " • " .. summary
+			end
+
+			vim.notify(text)
+		end)
+	end)
+end, { desc = "Git blame line" })
+
+local neocodeium = require("neocodeium")
+neocodeium.setup()
+vim.keymap.set("i", "<C-g>", neocodeium.accept)
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
@@ -360,16 +363,6 @@ require("mini.ai").setup({
 	},
 })
 
-require("go").setup()
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = "*.go",
-	callback = function()
-		require("go.format").goimports()
-	end,
-	group = vim.api.nvim_create_augroup("GoFormat", {}),
-})
-
 require("conform").setup({
 	formatters_by_ft = {
 		javascript = { "biome" },
@@ -396,10 +389,9 @@ require("blink.cmp").setup({
 })
 
 require("mason").setup()
-local mason_lspconfig = require("mason-lspconfig")
-local lspconfig = require("lspconfig")
-local capabilities = require("blink.cmp").get_lsp_capabilities()
-
+vim.lsp.config("*", {
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
@@ -409,11 +401,6 @@ vim.lsp.config("lua_ls", {
 		},
 	},
 })
-mason_lspconfig.setup({
-	automatic_installation = true,
-	handlers = {
-		function(server_name)
-			lspconfig[server_name].setup({ capabilities = capabilities })
-		end,
-	},
+require("mason-lspconfig").setup({
+	automatic_enable = true,
 })
