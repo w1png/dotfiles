@@ -1,0 +1,60 @@
+{
+  "version": 3,
+  "skills": {
+    "clean-code": {
+      "source": "sickn33/agentic-awesome-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sickn33/agentic-awesome-skills.git",
+      "skillPath": "skills/clean-code/SKILL.md",
+      "skillFolderHash": "f7e9ebffd5608df6b3ab00e0b0375d693215a409",
+      "installedAt": "2026-08-14T18:56:17.975Z",
+      "updatedAt": "2026-08-14T18:56:17.975Z"
+    },
+    "clean-architecture": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/pproenca/dot-skills.git",
+      "skillPath": "skills/.experimental/clean-architecture/SKILL.md",
+      "skillFolderHash": "3328734f7614c8afd11b839d989bba0fda4be56b",
+      "installedAt": "2026-08-14T18:56:58.176Z",
+      "updatedAt": "2026-08-14T18:56:58.176Z"
+    },
+    "code-simplifier": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/pproenca/dot-skills.git",
+      "skillPath": "skills/.curated/code-simplifier/SKILL.md",
+      "skillFolderHash": "3cfb1fcf0d73f2e6fa95d33f0dd012274f2cae6b",
+      "installedAt": "2026-08-14T18:57:44.461Z",
+      "updatedAt": "2026-08-14T18:57:44.461Z"
+    },
+    "tdd": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/engineering/tdd/SKILL.md",
+      "skillFolderHash": "423f3cc2bccf3b0ed426fb35eeb4b38d9188a343",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-08-14T19:00:50.149Z",
+      "updatedAt": "2026-08-14T19:00:50.149Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "antigravity",
+    "antigravity-cli",
+    "cline",
+    "codex",
+    "cursor",
+    "deepagents",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-code-cli",
+    "opencode",
+    "warp",
+    "zed"
+  ]
+}
