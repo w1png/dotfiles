@@ -4,6 +4,11 @@
       "rev": "8ca29c2eb34f5ce4770bffc0d62e6f636a4e8526",
       "src": "https://github.com/saghen/blink.cmp"
     },
+    "blink.lib": {
+      "rev": "c8fdc12c8a2fab6cf786dd7141a283f8079f902b",
+      "src": "https://github.com/saghen/blink.lib",
+      "version": "'c8fdc12c8a2fab6cf786dd7141a283f8079f902b'"
+    },
     "codediff.nvim": {
       "rev": "09d9ebef2cc5a5c04db7a349cd6c61bdf84ecc8e",
       "src": "https://github.com/esmuellert/codediff.nvim"
@@ -63,6 +68,10 @@
     "opencode.nvim": {
       "rev": "41622312d5d8fb074699c1d5d96f089286191376",
       "src": "https://github.com/nickjvandyke/opencode.nvim"
+    },
+    "run.nvim": {
+      "rev": "053c07903215f3c256553c6a1a5a2480178eb6a5",
+      "src": "https://github.com/w1png/run.nvim"
     },
     "rustaceanvim": {
       "rev": "9cb125de42c0256ed1bc1f9ded8d8f0381317a17",

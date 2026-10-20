@@ -4,19 +4,26 @@ local map = vim.keymap.set
 vim.pack.add({
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/esmuellert/codediff.nvim",
+	"https://github.com/w1png/run.nvim",
+
+	-- Themes
 	"https://github.com/folke/tokyonight.nvim",
 	"https://github.com/blazkowolf/gruber-darker.nvim",
 	"https://github.com/catppuccin/nvim",
 	"https://github.com/ellisonleao/gruvbox.nvim",
 	"https://github.com/Mofiqul/vscode.nvim",
 	"https://github.com/rose-pine/neovim",
-
-	"https://github.com/ellisonleao/gruvbox.nvim",
 	"https://github.com/monkoose/neocodeium",
+	-- End themes
 
 	-- LSP & related
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/neovim/nvim-lspconfig",
+	{
+		src = "https://github.com/saghen/blink.lib",
+		-- Match the configuration API used by the locked Blink v2 revision.
+		version = "c8fdc12c8a2fab6cf786dd7141a283f8079f902b",
+	},
 	"https://github.com/saghen/blink.cmp",
 	"https://github.com/williamboman/mason.nvim",
 	"https://github.com/williamboman/mason-lspconfig.nvim",
@@ -141,18 +148,14 @@ map({ "n", "x" }, "<leader>sh", function()
 	if vim.trim(command) == "" then
 		return
 	end
-	local cwd = vim.fn.getcwd()
 	local buf = vim.api.nvim_create_buf(true, false)
 	vim.api.nvim_open_win(buf, true, { split = "right", win = 0 })
 	vim.wo.diff, vim.wo.scrollbind, vim.wo.cursorbind = false, false, false
-	vim.wo.number, vim.wo.relativenumber = true, true
-	vim.wo.winbar = " Shell output (running) "
-	vim.bo[buf].modifiable = false
 	map("n", "q", "<Cmd>close<CR>", { buffer = buf, desc = "Close shell output window" })
 	vim.system(
 		{ vim.o.shell, "-ic", command },
 		{
-			cwd = cwd,
+			cwd = vim.fn.getcwd(),
 			env = { ZSH_TMUX_AUTOSTARTED = "true" },
 			text = true,
 		},
@@ -164,20 +167,12 @@ map({ "n", "x" }, "<leader>sh", function()
 			if result.stderr and result.stderr ~= "" then
 				output = output .. (output == "" and "" or "\n") .. result.stderr
 			end
-			local output_lines = vim.split(output, "\n", { plain = true })
-			if #output_lines > 1 and output_lines[#output_lines] == "" then
-				table.remove(output_lines)
-			end
-			vim.bo[buf].modifiable = true
-			vim.api.nvim_buf_set_lines(buf, 0, -1, false, output_lines)
-			vim.bo[buf].endofline = output:sub(-1) == "\n"
-			vim.bo[buf].fixendofline = false
-			vim.b[buf].shell_exit_code = result.code
+			vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(output:gsub("\n$", ""), "\n", { plain = true }))
 			if output:match("^%s*[%[{]") then
 				vim.bo[buf].filetype = "json"
 			end
-			for _, win in ipairs(vim.fn.win_findbuf(buf)) do
-				vim.wo[win].winbar = " Shell output (exit " .. result.code .. ") "
+			if result.code ~= 0 then
+				vim.notify("Shell command exited with code " .. result.code, vim.log.levels.WARN)
 			end
 		end)
 	)
@@ -185,9 +180,11 @@ end, { desc = "Run selection or current line in shell" })
 
 -- LSP keymaps
 vim.diagnostic.config({ update_in_insert = true })
+vim.lsp.inlay_hint.enable(false)
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = augroup("rust_diagnostics"),
 	callback = function(event)
+		vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		if client and client.name == "rust-analyzer" then
 			vim.diagnostic.config({ virtual_text = true }, vim.lsp.diagnostic.get_namespace(client.id))
@@ -197,7 +194,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Diagnostic float" })
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 
 -- Autocommands
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -294,17 +290,9 @@ local files = require("mini.files")
 files.setup({
 	windows = { preview = false },
 	mappings = {
-		close = "q",
-		go_in = "l",
 		go_in_plus = "<C-l>",
-		go_out = "h",
 		go_out_plus = "<C-h>",
-		reset = "<BS>",
-		reveal_cwd = "@",
-		show_help = "g?",
 		synchronize = "R",
-		trim_left = "<",
-		trim_right = ">",
 	},
 })
 
@@ -315,14 +303,14 @@ end, { silent = true, desc = "Mini Files" })
 -- Mini.pick
 require("mini.pick").setup({
 	mappings = {
-		choose = "<CR>",
-		toggle_preview = "<Tab>",
 		move_up = "<C-k>",
 		move_down = "<C-j>",
-		move_start = "<C-g>",
 	},
 })
 
+map("n", "<leader>rr", function()
+	require("run.nvim").pick()
+end)
 map("n", "<leader><leader>", function()
 	require("mini.pick").builtin.files({ tool = "rg" })
 end, { desc = "Find files" })
@@ -345,81 +333,22 @@ require("codediff").setup({
 		focus_on_select = true,
 		visible_groups = { staged = false, unstaged = true, conflicts = true },
 	},
-	keymaps = { view = { focus_explorer = "<leader>gh" } },
 })
 
 map("n", "<leader>gh", "<Cmd>CodeDiff<CR>", { desc = "Review unstaged and untracked files" })
 
-map("n", "<leader>ga", function()
-	local lifecycle = require("codediff.ui.lifecycle")
-	local tab = vim.api.nvim_get_current_tabpage()
-	local session, panel = lifecycle.get_session(tab), lifecycle.get_panel_view(tab)
-	local file = session and session.modified.absolute or vim.api.nvim_buf_get_name(0)
-	if panel and vim.api.nvim_get_current_buf() == panel.bufnr then
-		local node = panel.tree:get_node()
-		file = node and node.data.path and vim.fs.joinpath(session.git_root, node.data.path) or ""
-	end
-	if file == "" or (not session and vim.bo.buftype ~= "") then
-		vim.notify("Select a file to stage or unstage", vim.log.levels.WARN)
-		return
-	end
-	local function git(args)
-		return vim.system(
-			vim.list_extend({ "git", "--literal-pathspecs", "-C", vim.fs.dirname(file) }, args),
-			{ text = true }
-		)
-			:wait(5000)
-	end
-	local conflicts = git({ "ls-files", "--unmerged", "--", file })
-	if conflicts.code == 0 and conflicts.stdout ~= "" then
-		vim.notify("Resolve merge conflicts before staging this file", vim.log.levels.WARN)
-		return
-	end
-	local staged = git({ "diff", "--cached", "--quiet", "--no-ext-diff", "--", file })
-	if staged.code ~= 0 and staged.code ~= 1 then
-		vim.notify(staged.stderr, vim.log.levels.ERROR)
-		return
-	end
-	local args = { "add", "--", file }
-	if staged.code == 1 then
-		args = git({ "rev-parse", "--verify", "HEAD" }).code == 0 and { "restore", "--staged", "--", file }
-			or { "rm", "--cached", "--force", "--", file }
-	end
-	local result = git(args)
-	vim.notify(
-		result.code == 0 and ((staged.code == 1 and "Unstaged " or "Staged saved file ") .. file) or result.stderr,
-		result.code == 0 and vim.log.levels.INFO or vim.log.levels.ERROR
-	)
-end, { desc = "Toggle staging current file" })
-
--- Mini.files extra mappings
-vim.api.nvim_create_autocmd("User", {
-	pattern = "MiniFilesBufferCreate",
-	callback = function(args)
-		local b = args.data.buf_id
-		map("n", "go", function()
-			local entry = files.get_fs_entry()
-			if entry then
-				vim.fn.system({ "open", entry.path })
-			end
-		end, { buffer = b, desc = "Open with OS" })
-
-		map("n", "gy", function()
-			local entry = files.get_fs_entry()
-			if entry then
-				vim.fn.setreg("+", entry.path)
-				vim.notify("Copied path to clipboard")
-			end
-		end, { buffer = b, desc = "Yank path" })
-	end,
-})
-
 vim.keymap.set("n", "<leader>gb", function()
 	local file = vim.api.nvim_buf_get_name(0)
+	if file == "" or vim.bo.buftype ~= "" then
+		vim.notify("Git blame requires a file buffer", vim.log.levels.WARN)
+		return
+	end
 	local line = vim.api.nvim_win_get_cursor(0)[1]
 
 	vim.system({
 		"git",
+		"-C",
+		vim.fs.dirname(file),
 		"blame",
 		"-L",
 		line .. "," .. line,
@@ -464,8 +393,11 @@ vim.keymap.set("i", "<C-g>", neocodeium.accept)
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
 		"go",
+		"rust",
 		"tsx",
 		"jsx",
+		"typescriptreact",
+		"javascriptreact",
 		"vim",
 		"vimdoc",
 		"query",
@@ -485,12 +417,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-require("mini.ai").setup({
-	search_method = "cover_or_next",
-	custom_textobjects = {
-		F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
-	},
-})
+require("mini.ai").setup()
 
 local function project_formatter(bufnr)
 	local filename = vim.api.nvim_buf_get_name(bufnr)
@@ -538,19 +465,43 @@ local function project_formatter(bufnr)
 	return { biome and "biome" or prettier and "prettier" or "biome" }
 end
 
-require("conform").setup({
+local conform = require("conform")
+local format_on_save = true
+
+conform.setup({
+	default_format_opts = { lsp_format = "never", timeout_ms = 1000 },
 	formatters_by_ft = {
 		javascript = project_formatter,
 		typescript = project_formatter,
 		javascriptreact = project_formatter,
 		typescriptreact = project_formatter,
 		css = project_formatter,
+		json = project_formatter,
+		jsonc = project_formatter,
 		lua = { "stylua" },
 		python = { "isort", "black" },
 		rust = { "rustfmt" },
 	},
-	format_on_save = { lsp_fallback = false, async = false, timeout_ms = 1000 },
+	format_on_save = function()
+		if format_on_save then
+			return {}
+		end
+	end,
 })
+
+vim.api.nvim_create_user_command("Format", function()
+	if vim.tbl_isempty(conform.list_formatters(0)) then
+		local filetype = vim.bo.filetype ~= "" and vim.bo.filetype or "unset"
+		vim.notify("No formatter available for filetype: " .. filetype, vim.log.levels.WARN)
+		return
+	end
+	conform.format({ async = false })
+end, { desc = "Format current buffer" })
+
+vim.api.nvim_create_user_command("ToggleFormat", function()
+	format_on_save = not format_on_save
+	vim.notify("Format on save " .. (format_on_save and "enabled" or "disabled"))
+end, { desc = "Toggle format on save" })
 
 require("blink.cmp").setup({
 	keymap = {
@@ -571,12 +522,27 @@ vim.lsp.config("*", {
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
-			diagnostics = {
-				globals = { "vim" },
+			runtime = { version = "LuaJIT" },
+			workspace = {
+				library = { vim.env.VIMRUNTIME },
+				checkThirdParty = false,
 			},
 		},
 	},
 })
 require("mason-lspconfig").setup({
+	ensure_installed = {
+		"clangd",
+		"cssls",
+		"gopls",
+		"html",
+		"jsonls",
+		"lua_ls",
+		"rust_analyzer",
+		"tailwindcss",
+		"vtsls",
+	},
 	automatic_enable = { exclude = { "rust_analyzer" } },
 })
+
+require("plugin")
