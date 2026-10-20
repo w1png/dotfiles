@@ -279,15 +279,49 @@ require("mini.pairs").setup()
 require("mini.indentscope").setup()
 require("mini.diff").setup()
 require("mini.icons").setup()
+require("mini.trailspace").setup()
+require("mini.extra").setup()
+require("mini.misc").setup()
 require("mini.comment").setup({
 	mappings = { comment_line = "<leader>/", comment_visual = "<leader>/" },
 })
-require("mini.extra").setup()
-require("mini.misc").setup()
+
+local mini_hipatterns = require("mini.hipatterns")
+mini_hipatterns.setup({
+	highlighters = {
+		-- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+		fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+		hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+		todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+		note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+
+		hex_color = mini_hipatterns.gen_highlighter.hex_color(),
+	},
+})
 
 -- Mini.files
 local files = require("mini.files")
 files.setup({
+	content = {
+		prefix = function(entry)
+			local icon, highlight = files.default_prefix(entry)
+			local size = entry.fs_type == "file" and vim.fn.getfsize(entry.path) or -1
+			local label = "-"
+			if size >= 0 then
+				local units = { "B", "KiB", "MiB", "GiB", "TiB" }
+				local unit = 1
+				while size >= 1024 and unit < #units do
+					size, unit = size / 1024, unit + 1
+				end
+				label = (unit == 1 and "%d%s" or "%.1f%s"):format(size, units[unit])
+			end
+			return ("%s%9s "):format(icon, label), highlight
+		end,
+	},
+	options = {
+		use_as_default_explorer = true,
+		permanent_delete = false,
+	},
 	windows = { preview = false },
 	mappings = {
 		go_in_plus = "<C-l>",
