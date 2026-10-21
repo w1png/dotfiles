@@ -1,7 +1,7 @@
 {
   "plugins": {
     "blink.cmp": {
-      "rev": "8ca29c2eb34f5ce4770bffc0d62e6f636a4e8526",
+      "rev": "b72ed05dd452690181837d484984144a64709f17",
       "src": "https://github.com/saghen/blink.cmp"
     },
     "blink.lib": {
@@ -14,11 +14,11 @@
       "src": "https://github.com/esmuellert/codediff.nvim"
     },
     "conform.nvim": {
-      "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
+      "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "go.nvim": {
-      "rev": "0768d79bbebdb1a112a845f9cd6293bfbd544dab",
+      "rev": "5622d97078b30d853a0dfaf8cba204263a60c99a",
       "src": "https://github.com/ray-x/go.nvim"
     },
     "gruber-darker.nvim": {
@@ -34,7 +34,7 @@
       "src": "https://github.com/ray-x/guihua.lua"
     },
     "mason-lspconfig.nvim": {
-      "rev": "67029ccdac1ef8941e13b826417bc0ffac24cc86",
+      "rev": "00b5473cca4db5b410ff4bae724e3b6e21f2687f",
       "src": "https://github.com/williamboman/mason-lspconfig.nvim"
     },
     "mason.nvim": {
@@ -42,7 +42,7 @@
       "src": "https://github.com/williamboman/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "629bf6792187e11b4829411c1648f86f28df3963",
+      "rev": "4d84086ab334a88201b803d11d1086406fe7e43d",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neocodeium": {
@@ -58,19 +58,19 @@
       "src": "https://github.com/catppuccin/nvim"
     },
     "nvim-lspconfig": {
-      "rev": "43ed3797b266e1ee8d222e491379ad471c9d3146",
+      "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "c9f9ed6c1892f629ea399f4ee7905f2686fa13f2",
+      "rev": "29212d826054bb2948fa9d3a99eca9bf6a050eb2",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "opencode.nvim": {
-      "rev": "41622312d5d8fb074699c1d5d96f089286191376",
+      "rev": "e7643e9efc878876bb9c68da6cf30c45d6c34e5a",
       "src": "https://github.com/nickjvandyke/opencode.nvim"
     },
     "run.nvim": {
-      "rev": "053c07903215f3c256553c6a1a5a2480178eb6a5",
+      "rev": "bdade78598b5c632b574ff2733aa5654161af0ce",
       "src": "https://github.com/w1png/run.nvim"
     },
     "rustaceanvim": {
